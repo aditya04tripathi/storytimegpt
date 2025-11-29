@@ -1,5 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
+import { signOut } from "@firebase/auth";
 import { Tabs } from "expo-router";
+import { Pressable } from "@/components/ui";
+import { auth } from "@/services/firebase";
 import { Colors } from "@/theme/colors";
 
 export default function TabsLayout() {
@@ -17,6 +20,15 @@ export default function TabsLayout() {
 					backgroundColor: Colors.card,
 				},
 				headerTintColor: Colors.foreground,
+				headerRight: () => (
+					<Pressable
+						variant="ghost"
+						onPress={() => signOut(auth)}
+						style={{ margin: 0, padding: 0, marginRight: 10 }}
+					>
+						<Ionicons name="log-out" size={24} color={Colors.primary} />
+					</Pressable>
+				),
 			}}
 		>
 			<Tabs.Screen

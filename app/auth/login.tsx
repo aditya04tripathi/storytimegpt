@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Button } from "@/components/common/Button";
 import { Input, Spacer, Stack, Text, View } from "@/components/ui";
 import { useAuth } from "@/hooks/useAuth";
@@ -7,21 +7,15 @@ import { useAuth } from "@/hooks/useAuth";
 export default function LoginScreen() {
 	const router = useRouter();
 	const { login } = useAuth();
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [loading, setLoading] = useState(false);
+	const [email, setEmail] = useState("me@adityatripathi.dev");
+	const [password, setPassword] = useState("AdityaTripathi0404");
+	const [loginPending, startLoginPending] = useTransition();
 
-	const handleLogin = async () => {
-		setLoading(true);
-		try {
+	const handleLogin = () => {
+		startLoginPending(async () => {
 			await login(email, password);
 			router.replace("/(tabs)");
-		} catch (error) {
-			// TODO: Show error message
-			console.error("Login failed:", error);
-		} finally {
-			setLoading(false);
-		}
+		});
 	};
 
 	return (
@@ -58,7 +52,7 @@ export default function LoginScreen() {
 					autoCorrect={false}
 				/>
 				<Spacer size="md" />
-				<Button title="Login" onPress={handleLogin} loading={loading} />
+				<Button title="Login" onPress={handleLogin} loading={loginPending} />
 				<Spacer size="sm" />
 				<Button
 					title="Register"

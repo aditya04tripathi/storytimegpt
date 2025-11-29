@@ -1,8 +1,5 @@
-import {
-	SafeAreaView as RNSafeAreaView,
-	StyleSheet,
-	type ViewProps,
-} from "react-native";
+import { StyleSheet, type ViewProps } from "react-native";
+import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "@/theme/colors";
 
 type StyledSafeAreaViewProps = ViewProps & {

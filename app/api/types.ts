@@ -1,3 +1,5 @@
+import type { FieldValue } from "firebase/firestore";
+
 export type ApiResponse<T> = {
 	success: boolean;
 	error?: string;
@@ -9,6 +11,11 @@ export type User = {
 	email: string;
 	name?: string;
 	subscriptionTier: "free" | "silver" | "gold" | "platinum";
+	ageGroup: "child" | "teen" | "adult" | "senior";
+	languageProficiency: "beginner" | "intermediate" | "advanced" | "native";
+	lastLoginAt: FieldValue;
+	createdAt: FieldValue;
+	updatedAt: FieldValue;
 };
 
 export type Media = {
@@ -20,7 +27,7 @@ export type StorySummary = {
 	id: string;
 	title: string;
 	thumbnail?: string;
-	createdAt: string;
+	createdAt: FieldValue;
 	status: "pending" | "processing" | "completed" | "failed";
 };
 
@@ -31,7 +38,7 @@ export type Story = {
 	images: Media[];
 	audio?: Media;
 	videos?: Media[];
-	createdAt: string;
+	createdAt: FieldValue;
 	status: "pending" | "processing" | "completed" | "failed";
 };
 
@@ -60,4 +67,3 @@ export type StoryGenerateResponse = {
 	jobId: string;
 	storyId: string;
 };
-

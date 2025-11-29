@@ -5,6 +5,8 @@ Notifications.setNotificationHandler({
 		shouldShowAlert: true,
 		shouldPlaySound: true,
 		shouldSetBadge: true,
+		shouldShowBanner: true,
+		shouldShowList: true,
 	}),
 });
 
@@ -25,7 +27,7 @@ export class NotificationService {
 	async getExpoPushToken(): Promise<string | null> {
 		try {
 			const token = await Notifications.getExpoPushTokenAsync({
-				projectId: "your-project-id", // TODO: Replace with actual project ID
+				projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
 			});
 			return token.data;
 		} catch (error) {

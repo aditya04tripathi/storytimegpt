@@ -1,32 +1,78 @@
-import api from "@/api/axios";
+import * as FileSystem from "expo-file-system";
+import {
+	uploadAudio,
+	uploadImage,
+	uploadVideo,
+} from "./firebase/storageService";
 
 export class UploadService {
+	/**
+	 * Convert file URI to Blob for Firebase Storage
+	 * Uses expo-file-system to read the file and convert to Blob
+	 */
+	private async uriToBlob(uri: string): Promise<Blob> {
+		// Read file as base64
+		const base64 = await FileSystem.readAsStringAsync(uri, {
+			encoding: "base64",
+		});
+
+		// Get file info for content type
+		const fileInfo = await FileSystem.getInfoAsync(uri);
+		const mimeType =
+			fileInfo.uri.endsWith(".jpg") || fileInfo.uri.endsWith(".jpeg")
+				? "image/jpeg"
+				: fileInfo.uri.endsWith(".png")
+					? "image/png"
+					: fileInfo.uri.endsWith(".mp3")
+						? "audio/mpeg"
+						: fileInfo.uri.endsWith(".mp4")
+							? "video/mp4"
+							: "application/octet-stream";
+
+		// Convert base64 to Blob
+		const byteCharacters = atob(base64);
+		const byteNumbers = new Array(byteCharacters.length);
+		for (let i = 0; i < byteCharacters.length; i++) {
+			byteNumbers[i] = byteCharacters.charCodeAt(i);
+		}
+		const byteArray = new Uint8Array(byteNumbers);
+		return new Blob([byteArray], { type: mimeType });
+	}
+
+	/**
+	 * Upload file to Firebase Storage
+	 * @param uri - Local file URI
+	 * @param type - File type (image, audio, video)
+	 * @param storyId - Story ID for organizing files
+	 * @param index - Index for multiple files of same type (optional, defaults to 0)
+	 * @param onProgress - Optional progress callback
+	 * @returns Download URL from Firebase Storage
+	 */
 	async uploadFile(
 		uri: string,
 		type: "image" | "audio" | "video",
+		storyId: string,
+		index: number = 0,
+		onProgress?: (progress: number) => void,
 	): Promise<string> {
-		// TODO: Implement file upload to backend
-		const formData = new FormData();
-		const filename = uri.split("/").pop() || "file";
-		const fileType = `application/${type}`;
-
-		formData.append("file", {
-			uri,
-			type: fileType,
-			name: filename,
-		} as any);
-
 		try {
-			const response = await api.post("/upload", formData, {
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
-			});
+			// Convert URI to Blob
+			const blob = await this.uriToBlob(uri);
 
-			return response.url;
+			// Upload based on file type
+			switch (type) {
+				case "image":
+					return await uploadImage(blob, storyId, index, onProgress);
+				case "audio":
+					return await uploadAudio(blob, storyId, onProgress);
+				case "video":
+					return await uploadVideo(blob, storyId, index, onProgress);
+				default:
+					throw new Error(`Unsupported file type: ${type}`);
+			}
 		} catch (error) {
 			console.error("Upload error:", error);
-			throw error;
+			throw error instanceof Error ? error : new Error("Failed to upload file");
 		}
 	}
 }

@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Button } from "@/components/common/Button";
 import { Input, Spacer, Stack, Text, View } from "@/components/ui";
 import { useAuth } from "@/hooks/useAuth";
@@ -10,28 +10,18 @@ export default function RegisterScreen() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [name, setName] = useState("");
-	const [loading, setLoading] = useState(false);
+	const [registerPending, startRegisterPending] = useTransition();
 
-	const handleRegister = async () => {
-		setLoading(true);
-		try {
+	const handleRegister = () => {
+		startRegisterPending(async () => {
 			await register(email, password, name);
 			router.replace("/(tabs)");
-		} catch (error) {
-			// TODO: Show error message
-			console.error("Registration failed:", error);
-		} finally {
-			setLoading(false);
-		}
+		});
 	};
 
 	return (
-		<View
-			variant="default"
-			style={{ flex: 1, justifyContent: "center" }}
-			padding="lg"
-		>
-			<Stack direction="column" spacing="none" align="stretch">
+		<View variant="default" padding="lg">
+			<Stack direction="column" spacing="none" align="stretch" justify="center">
 				<Text
 					variant="default"
 					size="4xl"
@@ -46,6 +36,9 @@ export default function RegisterScreen() {
 					placeholder="Name"
 					value={name}
 					onChangeText={setName}
+					keyboardType="default"
+					autoCapitalize="none"
+					autoCorrect={false}
 				/>
 				<Spacer size="sm" />
 				<Input
@@ -67,7 +60,11 @@ export default function RegisterScreen() {
 					autoCorrect={false}
 				/>
 				<Spacer size="md" />
-				<Button title="Register" onPress={handleRegister} loading={loading} />
+				<Button
+					title="Register"
+					onPress={handleRegister}
+					loading={registerPending}
+				/>
 				<Spacer size="sm" />
 				<Button
 					title="Login"

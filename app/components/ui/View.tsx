@@ -14,6 +14,7 @@ type StyledViewProps = ViewProps & {
 	rounded?: keyof typeof Radius;
 	shadow?: "sm" | "md" | "lg" | "xl" | null;
 	children?: React.ReactNode;
+	onPress?: () => void;
 };
 
 export function View({
@@ -45,6 +46,7 @@ export function View({
 
 	return (
 		<RNView
+			onPress={props.onPress ? props.onPress : undefined}
 			style={[
 				styles.base,
 				variantStyles[variant],

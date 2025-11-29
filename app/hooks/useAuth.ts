@@ -1,40 +1,53 @@
+import {
+	sendPasswordReset,
+	signIn,
+	signUp,
+	updateUserProfile,
+} from "@/services/firebase/authService";
+import { setUser } from "@/services/firebase/firestoreService";
 import { useAuthStore } from "@/state/authStore";
-import * as SecureStore from "expo-secure-store";
-import api from "@/api/axios";
-import { endpoints } from "@/api/endpoints";
-import { LoginRequest, RegisterRequest, LoginResponse } from "@/api/types";
 
 export function useAuth() {
-	const { setUser } = useAuthStore();
+	const { setFirebaseUser } = useAuthStore();
 
 	const login = async (email: string, password: string) => {
-		const response = await api.post<LoginResponse>(endpoints.auth.login, {
-			email,
-			password,
-		} as LoginRequest);
-
-		await SecureStore.setItemAsync("accessToken", response.token);
-		setUser(response.user);
+		const firebaseUser = await signIn(email, password);
+		await setFirebaseUser(firebaseUser);
 	};
 
-	const register = async (
-		email: string,
-		password: string,
-		name?: string
-	) => {
-		const response = await api.post<LoginResponse>(endpoints.auth.register, {
-			email,
-			password,
-			name,
-		} as RegisterRequest);
+	const register = async (email: string, password: string, name?: string) => {
+		const firebaseUser = await signUp(email, password, name);
+		await updateProfile(name);
 
-		await SecureStore.setItemAsync("accessToken", response.token);
-		setUser(response.user);
+		if (firebaseUser) {
+			await setUser(firebaseUser.uid, {
+				id: firebaseUser.uid,
+				email: firebaseUser.email || "",
+				name: name || firebaseUser.displayName || undefined,
+				subscriptionTier: "free",
+			});
+		}
+
+		await setFirebaseUser(firebaseUser);
+	};
+
+	const resetPassword = async (email: string) => {
+		await sendPasswordReset(email);
+	};
+
+	const updateProfile = async (name?: string, photoURL?: string) => {
+		const { firebaseUser } = useAuthStore.getState();
+		if (firebaseUser) {
+			await updateUserProfile(firebaseUser, name, photoURL);
+			// Refresh user data
+			await setFirebaseUser(firebaseUser);
+		}
 	};
 
 	return {
 		login,
 		register,
+		resetPassword,
+		updateProfile,
 	};
 }
-

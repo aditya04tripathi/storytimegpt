@@ -1,0 +1,148 @@
+import { off, onValue, ref, set, type Unsubscribe } from "firebase/database";
+import { realtimeDb } from "../firebase";
+
+/**
+ * Subscribe to story generation status updates
+ * Returns unsubscribe function
+ */
+export function subscribeToStoryStatus(
+	jobId: string,
+	callback: (status: {
+		status: "pending" | "processing" | "completed" | "failed";
+		progress: number;
+		error?: string;
+	}) => void,
+): Unsubscribe {
+	const statusRef = ref(realtimeDb, `storyJobs/${jobId}/status`);
+	const progressRef = ref(realtimeDb, `storyJobs/${jobId}/progress`);
+	const errorRef = ref(realtimeDb, `storyJobs/${jobId}/error`);
+
+	const currentStatus: any = {
+		status: "pending",
+		progress: 0,
+	};
+
+	const unsubscribeStatus = onValue(statusRef, (snapshot) => {
+		const status = snapshot.val();
+		if (status) {
+			currentStatus.status = status;
+			callback(currentStatus);
+		}
+	});
+
+	const unsubscribeProgress = onValue(progressRef, (snapshot) => {
+		const progress = snapshot.val();
+		if (progress !== null && progress !== undefined) {
+			currentStatus.progress = progress;
+			callback(currentStatus);
+		}
+	});
+
+	const unsubscribeError = onValue(errorRef, (snapshot) => {
+		const error = snapshot.val();
+		if (error) {
+			currentStatus.error = error;
+			callback(currentStatus);
+		}
+	});
+
+	// Return combined unsubscribe function
+	return () => {
+		off(statusRef);
+		off(progressRef);
+		off(errorRef);
+		unsubscribeStatus();
+		unsubscribeProgress();
+		unsubscribeError();
+	};
+}
+
+/**
+ * Update story status in Realtime Database
+ */
+export async function updateStoryStatusRealtime(
+	jobId: string,
+	status: "pending" | "processing" | "completed" | "failed",
+): Promise<void> {
+	try {
+		const statusRef = ref(realtimeDb, `storyJobs/${jobId}/status`);
+		await set(statusRef, status);
+	} catch (error: any) {
+		throw new Error(error.message || "Failed to update story status");
+	}
+}
+
+/**
+ * Update story generation progress
+ */
+export async function updateStoryProgressRealtime(
+	jobId: string,
+	progress: number,
+): Promise<void> {
+	try {
+		const progressRef = ref(realtimeDb, `storyJobs/${jobId}/progress`);
+		await set(progressRef, Math.max(0, Math.min(100, progress)));
+	} catch (error: any) {
+		throw new Error(error.message || "Failed to update story progress");
+	}
+}
+
+/**
+ * Set story generation error
+ */
+export async function setStoryErrorRealtime(
+	jobId: string,
+	error: string,
+): Promise<void> {
+	try {
+		const errorRef = ref(realtimeDb, `storyJobs/${jobId}/error`);
+		await set(errorRef, error);
+	} catch (error: any) {
+		throw new Error(error.message || "Failed to set story error");
+	}
+}
+
+/**
+ * Subscribe to user notifications
+ * Returns unsubscribe function
+ */
+export function subscribeToUserNotificationsRealtime(
+	userId: string,
+	callback: (
+		notifications: Array<{
+			id: string;
+			message: string;
+			type: string;
+			timestamp: number;
+			read: boolean;
+		}>,
+	) => void,
+): Unsubscribe {
+	const notificationsRef = ref(realtimeDb, `users/${userId}/notifications`);
+
+	return onValue(notificationsRef, (snapshot) => {
+		const data = snapshot.val();
+		if (data) {
+			const notifications = Object.entries(data).map(
+				([id, notification]: [string, any]) => ({
+					id,
+					message: notification.message || "",
+					type: notification.type || "info",
+					timestamp: notification.timestamp || Date.now(),
+					read: notification.read || false,
+				}),
+			);
+			callback(notifications);
+		} else {
+			callback([]);
+		}
+	});
+}
+
+/**
+ * Unsubscribe from a specific path
+ */
+export function unsubscribeRealtime(path: string): void {
+	const dbRef = ref(realtimeDb, path);
+	off(dbRef);
+}

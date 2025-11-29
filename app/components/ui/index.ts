@@ -13,6 +13,7 @@ export { Switch } from "./Switch";
 export { Checkbox } from "./Checkbox";
 export { Alert } from "./Alert";
 export { Typography } from "./Typography";
+export { Picker } from "./Picker";
 
 // Styled base components
 export { Text } from "./Text";

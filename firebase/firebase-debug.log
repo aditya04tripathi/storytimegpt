@@ -1,0 +1,33 @@
+[debug] [2025-11-29T15:59:20.786Z] ----------------------------------------------------------------------
+[debug] [2025-11-29T15:59:20.788Z] Command:       /opt/homebrew/Cellar/node/24.9.0/bin/node /Users/aditya/Library/pnpm/global/5/.pnpm/firebase-tools@14.26.0_@types+node@24.5.2_encoding@0.1.13_typescript@5.8.3/node_modules/firebase-tools/lib/bin/firebase.js deploy --only storage:rules
+[debug] [2025-11-29T15:59:20.788Z] CLI Version:   14.26.0
+[debug] [2025-11-29T15:59:20.788Z] Platform:      darwin
+[debug] [2025-11-29T15:59:20.789Z] Node Version:  v24.9.0
+[debug] [2025-11-29T15:59:20.789Z] Time:          Sat Nov 29 2025 21:29:20 GMT+0530 (India Standard Time)
+[debug] [2025-11-29T15:59:20.789Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-11-29T15:59:20.901Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-29T15:59:20.902Z] > authorizing via signed-in user (adityatripathi.at04@gmail.com)
+[debug] [2025-11-29T15:59:20.902Z] [iam] checking project storytimegpt for permissions ["firebase.projects.get","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2025-11-29T15:59:20.902Z] Checked if tokens are valid: true, expires at: 1764435515400
+[debug] [2025-11-29T15:59:20.902Z] Checked if tokens are valid: true, expires at: 1764435515400
+[debug] [2025-11-29T15:59:20.903Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/storytimegpt:testIamPermissions [none]
+[debug] [2025-11-29T15:59:20.903Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/storytimegpt:testIamPermissions x-goog-quota-user=projects/storytimegpt
+[debug] [2025-11-29T15:59:20.903Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/storytimegpt:testIamPermissions {"permissions":["firebase.projects.get","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[debug] [2025-11-29T15:59:22.436Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/storytimegpt:testIamPermissions 200
+[debug] [2025-11-29T15:59:22.436Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/storytimegpt:testIamPermissions {}
+[debug] [2025-11-29T15:59:22.436Z] [iam] error while checking permissions, command may fail: Authorization failed. This account is missing the following required permissions on project storytimegpt:
+
+  firebase.projects.get
+  firebaserules.releases.create
+  firebaserules.releases.update
+  firebaserules.rulesets.create
+[info] 
+[info] === Deploying to 'storytimegpt'...
+[info] 
+[info] i  deploying storage 
+[info] i  storage: ensuring required API firebasestorage.googleapis.com is enabled... 
+[debug] [2025-11-29T15:59:22.439Z] Checked if tokens are valid: true, expires at: 1764435515400
+[debug] [2025-11-29T15:59:22.439Z] Checked if tokens are valid: true, expires at: 1764435515400
+[debug] [2025-11-29T15:59:22.439Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/storytimegpt/services/firebasestorage.googleapis.com [none]
+[debug] [2025-11-29T15:59:22.440Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/storytimegpt/services/firebasestorage.googleapis.com x-goog-quota-user=projects/storytimegpt

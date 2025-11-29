@@ -1,0 +1,9 @@
+{
+	"projects": {
+		"default": "storytimegpt",
+		"development": "storytimegpt-dev",
+		"staging": "storytimegpt-staging",
+		"production": "storytimegpt-prod"
+	}
+}
+
