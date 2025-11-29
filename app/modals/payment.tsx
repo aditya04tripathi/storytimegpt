@@ -14,7 +14,6 @@ export default function PaymentModal() {
 				<Text variant="muted" size="base">
 					Choose a plan that works best for you
 				</Text>
-				{/* TODO: Add subscription tiers */}
 				<Spacer size="xl" />
 				<Button title="Close" onPress={() => router.back()} variant="outline" />
 			</Stack>

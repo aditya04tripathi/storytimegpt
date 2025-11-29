@@ -249,7 +249,6 @@ export default function SubscriptionScreen() {
 							))}
 						</RNScrollView>
 
-						{/* Pagination dots */}
 						<View style={styles.pagination}>
 							{pricingTiers.map((tier, index) => (
 								<View

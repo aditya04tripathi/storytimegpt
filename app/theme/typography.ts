@@ -1,6 +1,3 @@
-/**
- * Typography system
- */
 export class Typography {
 	static readonly fontSans = "Outfit, sans-serif";
 	static readonly fontSerif =

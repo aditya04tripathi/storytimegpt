@@ -1,5 +1,3 @@
-// Export all Firebase services
-
 export * from "../firebase";
 export * from "./authService";
 export * from "./firestoreService";

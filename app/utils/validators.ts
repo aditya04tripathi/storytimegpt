@@ -33,7 +33,6 @@ export const validators = {
 		return value.trim().length > 0;
 	},
 
-	// Firebase-specific validators
 	storyPrompt: (prompt: string): boolean => {
 		const trimmed = prompt.trim();
 		return trimmed.length >= 10 && trimmed.length <= 500;
@@ -46,9 +45,9 @@ export const validators = {
 
 	fileSize: (size: number, type: "image" | "audio" | "video"): boolean => {
 		const limits = {
-			image: 5 * 1024 * 1024, // 5MB
-			audio: 50 * 1024 * 1024, // 50MB
-			video: 200 * 1024 * 1024, // 200MB
+			image: 5 * 1024 * 1024,
+			audio: 50 * 1024 * 1024,
+			video: 200 * 1024 * 1024,
 		};
 		return size <= limits[type];
 	},
@@ -75,7 +74,6 @@ export const validators = {
 	},
 
 	userId: (userId: string): boolean => {
-		// Firebase UIDs are typically 28 characters alphanumeric
 		return /^[a-zA-Z0-9]{20,}$/.test(userId);
 	},
 };

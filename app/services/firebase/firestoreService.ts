@@ -15,18 +15,12 @@ import {
 import type { Story, StorySummary, User } from "@/api/types";
 import { db } from "../firebase";
 
-// Collection names
 const COLLECTIONS = {
 	USERS: "users",
 	STORIES: "stories",
 	STORY_JOBS: "storyJobs",
 } as const;
 
-// ==================== User Operations ====================
-
-/**
- * Get user document from Firestore
- */
 export async function getUser(userId: string): Promise<User | null> {
 	try {
 		const userDoc = await getDoc(doc(db, COLLECTIONS.USERS, userId));
@@ -46,9 +40,6 @@ export async function getUser(userId: string): Promise<User | null> {
 	}
 }
 
-/**
- * Create or update user document in Firestore
- */
 export async function setUser(
 	userId: string,
 	userData: Partial<User>,
@@ -68,9 +59,6 @@ export async function setUser(
 	}
 }
 
-/**
- * Update user profile
- */
 export async function updateUser(
 	userId: string,
 	updates: Partial<User>,
@@ -86,9 +74,6 @@ export async function updateUser(
 	}
 }
 
-/**
- * Update user subscription tier
- */
 export async function updateSubscriptionTier(
 	userId: string,
 	tier: "free" | "silver" | "gold" | "platinum",
@@ -100,11 +85,6 @@ export async function updateSubscriptionTier(
 	}
 }
 
-// ==================== Story Operations ====================
-
-/**
- * Create new story document
- */
 export async function createStory(
 	userId: string,
 	storyData: {
@@ -138,9 +118,6 @@ export async function createStory(
 	}
 }
 
-/**
- * Get story by ID
- */
 export async function getStory(storyId: string): Promise<Story | null> {
 	try {
 		const storyDoc = await getDoc(doc(db, COLLECTIONS.STORIES, storyId));
@@ -176,9 +153,6 @@ export async function getStory(storyId: string): Promise<Story | null> {
 	}
 }
 
-/**
- * Get all stories for a user
- */
 export async function getUserStories(userId: string): Promise<StorySummary[]> {
 	try {
 		const storiesRef = collection(db, COLLECTIONS.STORIES);
@@ -205,9 +179,6 @@ export async function getUserStories(userId: string): Promise<StorySummary[]> {
 	}
 }
 
-/**
- * Update story document
- */
 export async function updateStory(
 	storyId: string,
 	updates: Partial<Story>,
@@ -234,9 +205,6 @@ export async function updateStory(
 	}
 }
 
-/**
- * Update story status
- */
 export async function updateStoryStatus(
 	storyId: string,
 	status: "pending" | "processing" | "completed" | "failed",
@@ -248,9 +216,6 @@ export async function updateStoryStatus(
 	}
 }
 
-/**
- * Delete story
- */
 export async function deleteStory(storyId: string): Promise<void> {
 	try {
 		await deleteDoc(doc(db, COLLECTIONS.STORIES, storyId));
@@ -259,24 +224,17 @@ export async function deleteStory(storyId: string): Promise<void> {
 	}
 }
 
-// ==================== Story Job Operations ====================
-
-/**
- * Create story generation job
- */
 export async function createStoryJob(
 	userId: string,
 	prompt: string,
 	title?: string,
 ): Promise<{ jobId: string; storyId: string }> {
 	try {
-		// First create the story document
 		const storyId = await createStory(userId, {
 			title: title || "Untitled Story",
 			status: "pending",
 		});
 
-		// Then create the job document
 		const jobsRef = collection(db, COLLECTIONS.STORY_JOBS);
 		const jobRef = doc(jobsRef);
 
@@ -300,9 +258,6 @@ export async function createStoryJob(
 	}
 }
 
-/**
- * Get story job by ID
- */
 export async function getStoryJob(jobId: string): Promise<{
 	id: string;
 	userId: string;
@@ -341,9 +296,6 @@ export async function getStoryJob(jobId: string): Promise<{
 	}
 }
 
-/**
- * Update story job
- */
 export async function updateStoryJob(
 	jobId: string,
 	updates: {

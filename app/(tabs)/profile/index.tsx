@@ -52,17 +52,14 @@ export default function ProfileScreen() {
 		setError(null);
 
 		try {
-			// Update Firebase Auth profile
 			await updateUserProfile(auth.currentUser, name);
 
-			// Update Firestore user document
 			await setUser(user.id, {
 				name: name,
 				languageProficiency: languageProficiency,
 				ageGroup: ageGroup,
 			});
 
-			// Refresh auth store to reflect changes
 			await setFirebaseUser(auth.currentUser);
 		} catch (err) {
 			const errorMessage =

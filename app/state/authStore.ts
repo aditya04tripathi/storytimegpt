@@ -22,11 +22,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 	isLoading: true,
 	setFirebaseUser: async (firebaseUser) => {
 		if (firebaseUser) {
-			// Fetch user data from Firestore
 			try {
 				let userData = await getUser(firebaseUser.uid);
 
-				// If user doesn't exist in Firestore, create it
 				if (!userData) {
 					await setUser(firebaseUser.uid, {
 						id: firebaseUser.uid,
@@ -69,7 +67,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 			});
 		} catch (error) {
 			console.error("Failed to sign out:", error);
-			// Still clear local state even if sign out fails
 			set({
 				firebaseUser: null,
 				user: undefined,

@@ -6,17 +6,11 @@ import {
 } from "./firebase/storageService";
 
 export class UploadService {
-	/**
-	 * Convert file URI to Blob for Firebase Storage
-	 * Uses expo-file-system to read the file and convert to Blob
-	 */
 	private async uriToBlob(uri: string): Promise<Blob> {
-		// Read file as base64
 		const base64 = await FileSystem.readAsStringAsync(uri, {
 			encoding: "base64",
 		});
 
-		// Get file info for content type
 		const fileInfo = await FileSystem.getInfoAsync(uri);
 		const mimeType =
 			fileInfo.uri.endsWith(".jpg") || fileInfo.uri.endsWith(".jpeg")
@@ -29,7 +23,6 @@ export class UploadService {
 							? "video/mp4"
 							: "application/octet-stream";
 
-		// Convert base64 to Blob
 		const byteCharacters = atob(base64);
 		const byteNumbers = new Array(byteCharacters.length);
 		for (let i = 0; i < byteCharacters.length; i++) {
@@ -39,15 +32,6 @@ export class UploadService {
 		return new Blob([byteArray], { type: mimeType });
 	}
 
-	/**
-	 * Upload file to Firebase Storage
-	 * @param uri - Local file URI
-	 * @param type - File type (image, audio, video)
-	 * @param storyId - Story ID for organizing files
-	 * @param index - Index for multiple files of same type (optional, defaults to 0)
-	 * @param onProgress - Optional progress callback
-	 * @returns Download URL from Firebase Storage
-	 */
 	async uploadFile(
 		uri: string,
 		type: "image" | "audio" | "video",
@@ -56,10 +40,8 @@ export class UploadService {
 		onProgress?: (progress: number) => void,
 	): Promise<string> {
 		try {
-			// Convert URI to Blob
 			const blob = await this.uriToBlob(uri);
 
-			// Upload based on file type
 			switch (type) {
 				case "image":
 					return await uploadImage(blob, storyId, index, onProgress);

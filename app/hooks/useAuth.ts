@@ -39,7 +39,6 @@ export function useAuth() {
 		const { firebaseUser } = useAuthStore.getState();
 		if (firebaseUser) {
 			await updateUserProfile(firebaseUser, name, photoURL);
-			// Refresh user data
 			await setFirebaseUser(firebaseUser);
 		}
 	};

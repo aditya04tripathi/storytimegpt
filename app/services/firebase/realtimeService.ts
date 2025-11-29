@@ -1,10 +1,6 @@
 import { off, onValue, ref, set, type Unsubscribe } from "firebase/database";
 import { realtimeDb } from "../firebase";
 
-/**
- * Subscribe to story generation status updates
- * Returns unsubscribe function
- */
 export function subscribeToStoryStatus(
 	jobId: string,
 	callback: (status: {
@@ -46,7 +42,6 @@ export function subscribeToStoryStatus(
 		}
 	});
 
-	// Return combined unsubscribe function
 	return () => {
 		off(statusRef);
 		off(progressRef);
@@ -57,9 +52,6 @@ export function subscribeToStoryStatus(
 	};
 }
 
-/**
- * Update story status in Realtime Database
- */
 export async function updateStoryStatusRealtime(
 	jobId: string,
 	status: "pending" | "processing" | "completed" | "failed",
@@ -72,9 +64,6 @@ export async function updateStoryStatusRealtime(
 	}
 }
 
-/**
- * Update story generation progress
- */
 export async function updateStoryProgressRealtime(
 	jobId: string,
 	progress: number,
@@ -87,9 +76,6 @@ export async function updateStoryProgressRealtime(
 	}
 }
 
-/**
- * Set story generation error
- */
 export async function setStoryErrorRealtime(
 	jobId: string,
 	error: string,
@@ -102,10 +88,6 @@ export async function setStoryErrorRealtime(
 	}
 }
 
-/**
- * Subscribe to user notifications
- * Returns unsubscribe function
- */
 export function subscribeToUserNotificationsRealtime(
 	userId: string,
 	callback: (
@@ -139,9 +121,6 @@ export function subscribeToUserNotificationsRealtime(
 	});
 }
 
-/**
- * Unsubscribe from a specific path
- */
 export function unsubscribeRealtime(path: string): void {
 	const dbRef = ref(realtimeDb, path);
 	off(dbRef);

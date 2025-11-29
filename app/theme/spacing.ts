@@ -1,6 +1,3 @@
-/**
- * Spacing scale for consistent layout
- */
 export class Spacing {
 	static readonly none = 0;
 	static readonly xs = 4;

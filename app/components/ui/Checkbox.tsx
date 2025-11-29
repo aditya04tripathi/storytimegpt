@@ -32,7 +32,6 @@ export function Checkbox({ checked, onChange, label, disabled = false }: Checkbo
 			</View>
 			{label && (
 				<View style={styles.labelContainer}>
-					{/* Label would be rendered here if needed */}
 				</View>
 			)}
 		</TouchableOpacity>

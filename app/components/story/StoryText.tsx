@@ -13,7 +13,6 @@ export function StoryText({ text }: StoryTextProps) {
 	const words = text.split(/\s+/);
 
 	const handleWordPress = (word: string) => {
-		// TODO: Get word position for popup
 		setSelectedWord(word);
 	};
 

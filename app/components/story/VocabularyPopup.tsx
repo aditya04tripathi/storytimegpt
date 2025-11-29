@@ -10,7 +10,6 @@ type VocabularyPopupProps = {
 };
 
 export function VocabularyPopup({ word, onClose }: VocabularyPopupProps) {
-	// TODO: Fetch definition from API
 	const definition = `Definition for "${word}" would appear here.`;
 
 	return (

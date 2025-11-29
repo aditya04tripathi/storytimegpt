@@ -13,7 +13,6 @@ const api = axios.create({
 	},
 });
 
-// Attach JWT token to requests
 api.interceptors.request.use(
 	async (config) => {
 		const token = await SecureStore.getItemAsync("accessToken");
@@ -27,7 +26,6 @@ api.interceptors.request.use(
 	}
 );
 
-// Handle token refresh
 let isRefreshing = false;
 let failedQueue: (() => void)[] = [];
 
@@ -80,7 +78,6 @@ api.interceptors.response.use(
 				isRefreshing = false;
 				await SecureStore.deleteItemAsync("accessToken");
 				await SecureStore.deleteItemAsync("refreshToken");
-				// TODO: Redirect to login
 				return Promise.reject(refreshError);
 			}
 		}

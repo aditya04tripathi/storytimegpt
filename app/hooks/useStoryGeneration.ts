@@ -24,7 +24,6 @@ export function useStoryGeneration() {
 
 				const { jobId, storyId } = response;
 
-				// Create optimistic story
 				const optimisticStory: Story = {
 					id: storyId,
 					title: title || prompt.substring(0, 50),
@@ -36,7 +35,6 @@ export function useStoryGeneration() {
 
 				addStory(optimisticStory);
 
-				// Start polling
 				pollStatus(storyId);
 
 				return { jobId, storyId };

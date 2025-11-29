@@ -44,7 +44,6 @@ export const formatters = {
 		}).format(amount);
 	},
 
-	// Firebase-specific formatters
 	firestoreTimestamp: (timestamp: Timestamp | Date | string): string => {
 		if (typeof timestamp === "string") {
 			return timestamp;

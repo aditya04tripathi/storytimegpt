@@ -9,9 +9,6 @@ import {
 } from "firebase/storage";
 import { storage } from "../firebase";
 
-/**
- * Upload image file to Firebase Storage
- */
 export async function uploadImage(
 	file: Blob | Uint8Array | ArrayBuffer,
 	storyId: string,
@@ -23,7 +20,6 @@ export async function uploadImage(
 		const storageRef = ref(storage, `images/${storyId}/${fileName}`);
 
 		if (onProgress) {
-			// Use resumable upload for progress tracking
 			const uploadTask = uploadBytesResumable(storageRef, file);
 			return new Promise((resolve, reject) => {
 				uploadTask.on(
@@ -43,7 +39,6 @@ export async function uploadImage(
 				);
 			});
 		} else {
-			// Simple upload without progress
 			await uploadBytes(storageRef, file);
 			return await getDownloadURL(storageRef);
 		}
@@ -52,9 +47,6 @@ export async function uploadImage(
 	}
 }
 
-/**
- * Upload audio file to Firebase Storage
- */
 export async function uploadAudio(
 	file: Blob | Uint8Array | ArrayBuffer,
 	storyId: string,
@@ -92,9 +84,6 @@ export async function uploadAudio(
 	}
 }
 
-/**
- * Upload video file to Firebase Storage
- */
 export async function uploadVideo(
 	file: Blob | Uint8Array | ArrayBuffer,
 	storyId: string,
@@ -133,9 +122,6 @@ export async function uploadVideo(
 	}
 }
 
-/**
- * Get download URL for a file path
- */
 export async function getDownloadURLForPath(path: string): Promise<string> {
 	try {
 		const storageRef = ref(storage, path);
@@ -145,9 +131,6 @@ export async function getDownloadURLForPath(path: string): Promise<string> {
 	}
 }
 
-/**
- * Delete file from Firebase Storage
- */
 export async function deleteFile(path: string): Promise<void> {
 	try {
 		const storageRef = ref(storage, path);
@@ -157,9 +140,6 @@ export async function deleteFile(path: string): Promise<void> {
 	}
 }
 
-/**
- * Get file metadata
- */
 export async function getFileMetadata(path: string): Promise<{
 	size: number;
 	contentType: string;

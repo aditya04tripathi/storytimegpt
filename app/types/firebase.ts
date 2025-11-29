@@ -1,8 +1,5 @@
-import { Timestamp } from "firebase/firestore";
+import type { Timestamp } from "firebase/firestore";
 
-/**
- * User document structure in Firestore
- */
 export interface UserDocument {
 	id: string;
 	email: string;
@@ -12,25 +9,19 @@ export interface UserDocument {
 	updatedAt: Timestamp;
 }
 
-/**
- * Story document structure in Firestore
- */
 export interface StoryDocument {
 	id: string;
 	userId: string;
 	title: string;
 	text: string;
-	images: string[]; // Storage paths
-	audio?: string; // Storage path
-	videos?: string[]; // Storage paths
+	images: string[];
+	audio?: string;
+	videos?: string[];
 	status: "pending" | "processing" | "completed" | "failed";
 	createdAt: Timestamp;
 	updatedAt: Timestamp;
 }
 
-/**
- * Story job document structure in Firestore
- */
 export interface StoryJobDocument {
 	id: string;
 	userId: string;
@@ -38,15 +29,12 @@ export interface StoryJobDocument {
 	prompt: string;
 	title?: string;
 	status: "pending" | "processing" | "completed" | "failed";
-	progress: number; // 0-100
+	progress: number;
 	error?: string;
 	createdAt: Timestamp;
 	updatedAt: Timestamp;
 }
 
-/**
- * Subscription tier document structure in Firestore
- */
 export interface SubscriptionTierDocument {
 	id: string;
 	name: "free" | "silver" | "gold" | "platinum";
@@ -62,9 +50,6 @@ export interface SubscriptionTierDocument {
 	updatedAt: Timestamp;
 }
 
-/**
- * Storage metadata for uploaded files
- */
 export interface StorageMetadata {
 	size: number;
 	contentType: string;
@@ -73,37 +58,24 @@ export interface StorageMetadata {
 	customMetadata?: Record<string, string>;
 }
 
-/**
- * Image file metadata
- */
 export interface ImageMetadata extends StorageMetadata {
 	width?: number;
 	height?: number;
 }
 
-/**
- * Audio file metadata
- */
 export interface AudioMetadata extends StorageMetadata {
-	duration?: number; // Duration in seconds
+	duration?: number;
 	bitrate?: number;
 }
 
-/**
- * Video file metadata
- */
 export interface VideoMetadata extends StorageMetadata {
-	duration?: number; // Duration in seconds
+	duration?: number;
 	width?: number;
 	height?: number;
 	bitrate?: number;
 }
 
-/**
- * Storage path structure
- */
 export type StoragePath =
-	| `images/${string}/${string}` // images/{storyId}/{fileName}
-	| `audio/${string}/${string}` // audio/{storyId}/{fileName}
-	| `video/${string}/${string}`; // video/{storyId}/{fileName}
-
+	| `images/${string}/${string}`
+	| `audio/${string}/${string}`
+	| `video/${string}/${string}`;

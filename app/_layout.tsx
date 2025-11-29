@@ -11,17 +11,14 @@ export default function RootLayout() {
 	const segments = useSegments();
 	const router = useRouter();
 
-	// Handle navigation based on auth state
 	useEffect(() => {
 		if (isLoading) return;
 
 		const inAuthGroup = segments[0] === "auth";
 
 		if (isSignedIn && inAuthGroup) {
-			// User is signed in but on auth screens, redirect to tabs
 			router.replace("/(tabs)");
 		} else if (!isSignedIn && !inAuthGroup) {
-			// User is not signed in and not on auth screens, redirect to login
 			router.replace("/auth/login");
 		}
 	}, [isSignedIn, segments, isLoading, router]);
@@ -38,7 +35,6 @@ export default function RootLayout() {
 						contentStyle: { backgroundColor: Colors.background },
 					}}
 				>
-					{/* Authenticated screens */}
 					<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 					<Stack.Screen
 						name="library/[storyId]"
@@ -64,7 +60,6 @@ export default function RootLayout() {
 							headerTintColor: Colors.foreground,
 						}}
 					/>
-					{/* Unauthenticated screens */}
 					<Stack.Screen name="auth/login" options={{ presentation: "card" }} />
 					<Stack.Screen
 						name="auth/register"

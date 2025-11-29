@@ -1,6 +1,3 @@
-/**
- * Centralized theme export
- */
 export { Colors } from "./colors";
 export { Radius } from "./radius";
 export { Shadows } from "./shadows";

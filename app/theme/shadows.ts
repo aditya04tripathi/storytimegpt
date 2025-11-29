@@ -1,8 +1,5 @@
 import { Platform } from "react-native";
 
-/**
- * Shadow styles for iOS and Android
- */
 export class Shadows {
 	static readonly sm = Platform.select({
 		ios: {

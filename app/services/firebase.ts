@@ -14,7 +14,6 @@ const firebaseConfig = {
 	databaseURL: process.env.EXPO_PUBLIC_FIREBASE_DATABASE_URL,
 };
 
-// Initialize Firebase (prevent multiple initializations)
 let app: FirebaseApp;
 if (getApps().length === 0) {
 	app = initializeApp(firebaseConfig);
@@ -22,7 +21,6 @@ if (getApps().length === 0) {
 	app = getApps()[0];
 }
 
-// Initialize Firebase services
 export const auth: Auth = getAuth(app);
 export const db: Firestore = getFirestore(app);
 export const storage: FirebaseStorage = getStorage(app);

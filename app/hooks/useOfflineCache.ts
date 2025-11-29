@@ -6,14 +6,10 @@ export function useOfflineCache() {
 	const { stories } = useStoryStore();
 
 	const cacheStory = useCallback(async (story: Story) => {
-		// TODO: Implement SQLite caching
-		// Store story metadata and text in SQLite
-		// Cache media files to file system
 	}, []);
 
 	const getCachedStory = useCallback(
 		async (storyId: string): Promise<Story | null> => {
-			// TODO: Retrieve from SQLite
 			const story = stories.find((s) => s.id === storyId);
 			return story || null;
 		},

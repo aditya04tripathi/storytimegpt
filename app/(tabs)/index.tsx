@@ -15,7 +15,6 @@ export default function HomeScreen() {
 				<Button
 					title="Generate Story"
 					onPress={() => {
-						// TODO: Implement story generation
 					}}
 				/>
 			</Stack>

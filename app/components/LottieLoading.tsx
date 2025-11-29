@@ -7,7 +7,6 @@ type LottieLoadingProps = {
 };
 
 export function LottieLoading({ size = "large" }: LottieLoadingProps) {
-	// TODO: Replace with Lottie animation
 	return (
 		<View
 			variant="default"
