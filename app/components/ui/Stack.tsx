@@ -14,6 +14,7 @@ type StackProps = ViewProps & {
 	justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
 	wrap?: boolean;
 	expand?: boolean;
+	padding?: keyof typeof Spacing;
 };
 
 export function Stack({
@@ -24,9 +25,11 @@ export function Stack({
 	justify = "start",
 	wrap = false,
 	expand = true,
+	padding = "none",
 	style,
 	...props
 }: StackProps) {
+	const paddingValue: number = Spacing[padding] as number;
 	const alignMap: Record<string, FlexAlignType> = {
 		start: "flex-start",
 		center: "center",
@@ -63,6 +66,7 @@ export function Stack({
 					justifyContent: justifyMap[justify],
 					flexWrap: wrap ? "wrap" : "nowrap",
 					gap: spacingValue,
+					padding: paddingValue,
 				},
 				style,
 			]}

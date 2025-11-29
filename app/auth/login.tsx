@@ -8,7 +8,7 @@ export default function LoginScreen() {
 	const router = useRouter();
 	const { login } = useAuth();
 	const [email, setEmail] = useState("me@adityatripathi.dev");
-	const [password, setPassword] = useState("AdityaTripathi0404");
+	const [password, setPassword] = useState("1234567890");
 	const [loginPending, startLoginPending] = useTransition();
 
 	const handleLogin = () => {

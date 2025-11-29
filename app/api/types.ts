@@ -13,6 +13,8 @@ export type User = {
 	subscriptionTier: "free" | "silver" | "gold" | "platinum";
 	ageGroup: "child" | "teen" | "adult" | "senior";
 	languageProficiency: "beginner" | "intermediate" | "advanced" | "native";
+	favoriteGenres: string[];
+	photoURL?: string;
 	lastLoginAt: FieldValue;
 	createdAt: FieldValue;
 	updatedAt: FieldValue;
@@ -34,6 +36,8 @@ export type StorySummary = {
 export type Story = {
 	id: string;
 	title: string;
+	settingPlace: string;
+	protagonistName: string;
 	text: string;
 	images: Media[];
 	audio?: Media;
@@ -59,11 +63,23 @@ export type LoginResponse = {
 };
 
 export type StoryGenerateRequest = {
-	prompt: string;
 	title?: string;
+	prompt: string;
+	protagonist_name: string;
+	age_group: "child" | "teen" | "adult" | "senior";
+	language_proficiency: "beginner" | "intermediate" | "advanced" | "native";
+	story_length: "short" | "medium" | "long";
+	genre?: string;
+	tone?: string;
+	setting?: string;
 };
 
 export type StoryGenerateResponse = {
-	jobId: string;
-	storyId: string;
+	message: string | undefined;
+	okay: boolean;
+	protagonist_name: string;
+	title: string;
+	story: string;
+	setting_place: string;
+	error?: string;
 };

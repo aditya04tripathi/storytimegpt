@@ -1,22 +1,32 @@
 import { useRouter } from "expo-router";
-import { signOut } from "firebase/auth";
 import { Button } from "@/components/common/Button";
 import { Card } from "@/components/common/Card";
-import { ScrollView, Spacer, Stack, Text, View } from "@/components/ui";
+import { ScrollView, Spacer, Stack, Text } from "@/components/ui";
 import { signOutUser } from "@/services/firebase/authService";
 
 export default function SettingsScreen() {
 	const router = useRouter();
 
 	return (
-		<View variant="default" padding="lg">
-			<Text variant="default" size="4xl" weight="bold">
-				Settings
-			</Text>
-			<Stack direction="column" justify="between">
-				<ScrollView>
-					<Stack direction="column" spacing="sm">
-						<Spacer size="md" />
+		<ScrollView contentPadding="lg">
+			<Stack
+				direction="column"
+				spacing="none"
+				justify="between"
+				align="stretch"
+				expand
+			>
+				<Stack direction="column" spacing="md" align="stretch" expand={false}>
+					<Stack direction="column" spacing="xs" align="start">
+						<Text variant="default" size="4xl" weight="bold">
+							Settings
+						</Text>
+						<Text variant="muted" size="base">
+							Manage your account and preferences
+						</Text>
+					</Stack>
+
+					<Stack direction="column" spacing="md" align="stretch">
 						<Card
 							title="Notifications"
 							subtitle="Manage notification preferences"
@@ -33,9 +43,12 @@ export default function SettingsScreen() {
 							subtitle="App version and information"
 						/>
 					</Stack>
-				</ScrollView>
+				</Stack>
+
+				<Spacer size="md" />
+
 				<Button variant="danger" title="Logout" onPress={() => signOutUser()} />
 			</Stack>
-		</View>
+		</ScrollView>
 	);
 }

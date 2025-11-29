@@ -32,13 +32,15 @@ export default function RootLayout() {
 				<Stack
 					screenOptions={{
 						headerShown: false,
-						contentStyle: { backgroundColor: Colors.background },
 					}}
 				>
 					<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 					<Stack.Screen
 						name="library/[storyId]"
-						options={{ presentation: "card" }}
+						options={{
+							presentation: "card",
+							headerShown: false,
+						}}
 					/>
 					<Stack.Screen
 						name="modals/about"

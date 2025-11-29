@@ -6,6 +6,7 @@ import type {
 	StoryGenerateRequest,
 	StoryGenerateResponse,
 } from "@/api/types";
+import { logError } from "@/services/errorLogger";
 import { useStoryStore } from "@/state/storyStore";
 
 export function useStoryGeneration() {
@@ -66,7 +67,10 @@ export function useStoryGeneration() {
 
 					delay = Math.min(maxDelay, delay * 1.5);
 				} catch (error) {
-					console.error("Polling error:", error);
+					await logError(error, "medium", {
+						action: "poll_story_status",
+						metadata: { storyId },
+					});
 					break;
 				}
 			}

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "@/theme/colors";
 import { Radius } from "@/theme/radius";
@@ -17,6 +18,7 @@ type InputProps = {
 	multiline?: boolean;
 	numberOfLines?: number;
 	disabled?: boolean;
+	right?: ReactNode;
 };
 
 export function Input({
@@ -32,29 +34,34 @@ export function Input({
 	multiline = false,
 	numberOfLines = 1,
 	disabled = false,
+	right,
 }: InputProps) {
 	return (
 		<View style={styles.container}>
 			{label && <Text style={styles.label}>{label}</Text>}
-			<TextInput
-				style={[
-					styles.input,
-					error && styles.inputError,
-					disabled && styles.inputDisabled,
-					multiline && styles.inputMultiline,
-				]}
-				placeholder={placeholder}
-				placeholderTextColor={Colors.mutedForeground}
-				value={value}
-				onChangeText={onChangeText}
-				secureTextEntry={secureTextEntry}
-				keyboardType={keyboardType}
-				autoCapitalize={autoCapitalize}
-				autoCorrect={autoCorrect}
-				multiline={multiline}
-				numberOfLines={numberOfLines}
-				editable={!disabled}
-			/>
+			<View style={styles.inputWrapper}>
+				<TextInput
+					style={[
+						styles.input,
+						error && styles.inputError,
+						disabled && styles.inputDisabled,
+						multiline && styles.inputMultiline,
+						right && styles.inputWithRight,
+					]}
+					placeholder={placeholder}
+					placeholderTextColor={Colors.mutedForeground}
+					value={value}
+					onChangeText={onChangeText}
+					secureTextEntry={secureTextEntry}
+					keyboardType={keyboardType}
+					autoCapitalize={autoCapitalize}
+					autoCorrect={autoCorrect}
+					multiline={multiline}
+					numberOfLines={numberOfLines}
+					editable={!disabled}
+				/>
+				{right && <View style={styles.rightContainer}>{right}</View>}
+			</View>
 			{error && <Text style={styles.errorText}>{error}</Text>}
 		</View>
 	);
@@ -70,6 +77,9 @@ const styles = StyleSheet.create({
 		color: Colors.foreground,
 		marginBottom: Spacing.sm,
 	},
+	inputWrapper: {
+		position: "relative",
+	},
 	input: {
 		backgroundColor: Colors.input,
 		borderColor: Colors.border,
@@ -81,6 +91,9 @@ const styles = StyleSheet.create({
 		color: Colors.foreground,
 		minHeight: 44,
 	},
+	inputWithRight: {
+		paddingRight: 50,
+	},
 	inputMultiline: {
 		minHeight: 100,
 		textAlignVertical: "top",
@@ -90,6 +103,14 @@ const styles = StyleSheet.create({
 	},
 	inputDisabled: {
 		opacity: 0.5,
+	},
+	rightContainer: {
+		position: "absolute",
+		right: Spacing.sm,
+		top: 0,
+		bottom: 0,
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	errorText: {
 		fontSize: Typography.fontSize.sm,

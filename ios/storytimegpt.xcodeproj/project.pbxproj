@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1300CC835F7726AB5A644586 /* libPods-StorytimeGPT.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FAA1A8A68E04680B37540BF /* libPods-StorytimeGPT.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		21634C238339852F86669B46 /* libPods-StorytimeGPT.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D98784951FF857D0D34260CF /* libPods-StorytimeGPT.a */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		6A5C19C094DA6D7032026050 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6AC7BA1166AD01CD30BD812 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
@@ -20,16 +20,16 @@
 		13B07F961A680F5B00A75B9A /* StorytimeGPT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StorytimeGPT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = StorytimeGPT/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = StorytimeGPT/Info.plist; sourceTree = "<group>"; };
+		3FAA1A8A68E04680B37540BF /* libPods-StorytimeGPT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StorytimeGPT.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		63FBF5C3A755663B19EAAFFF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = StorytimeGPT/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = StorytimeGPT/SplashScreen.storyboard; sourceTree = "<group>"; };
-		B128365AC07B4D38D5D8E610 /* Pods-StorytimeGPT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StorytimeGPT.release.xcconfig"; path = "Target Support Files/Pods-StorytimeGPT/Pods-StorytimeGPT.release.xcconfig"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		D98784951FF857D0D34260CF /* libPods-StorytimeGPT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StorytimeGPT.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E42584446B8EF1F65364D561 /* Pods-StorytimeGPT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StorytimeGPT.release.xcconfig"; path = "Target Support Files/Pods-StorytimeGPT/Pods-StorytimeGPT.release.xcconfig"; sourceTree = "<group>"; };
 		E6AC7BA1166AD01CD30BD812 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-StorytimeGPT/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = StorytimeGPT/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* StorytimeGPT-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "StorytimeGPT-Bridging-Header.h"; path = "StorytimeGPT/StorytimeGPT-Bridging-Header.h"; sourceTree = "<group>"; };
-		FF71CFF7F788718C8DFBD8BA /* Pods-StorytimeGPT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StorytimeGPT.debug.xcconfig"; path = "Target Support Files/Pods-StorytimeGPT/Pods-StorytimeGPT.debug.xcconfig"; sourceTree = "<group>"; };
+		F3DF92026C9C7BE285982102 /* Pods-StorytimeGPT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StorytimeGPT.debug.xcconfig"; path = "Target Support Files/Pods-StorytimeGPT/Pods-StorytimeGPT.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				21634C238339852F86669B46 /* libPods-StorytimeGPT.a in Frameworks */,
+				1300CC835F7726AB5A644586 /* libPods-StorytimeGPT.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,7 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				D98784951FF857D0D34260CF /* libPods-StorytimeGPT.a */,
+				3FAA1A8A68E04680B37540BF /* libPods-StorytimeGPT.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -75,22 +75,22 @@
 			name = StorytimeGPT;
 			sourceTree = "<group>";
 		};
-		539CF0DA857E8C3608260B0E /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				FF71CFF7F788718C8DFBD8BA /* Pods-StorytimeGPT.debug.xcconfig */,
-				B128365AC07B4D38D5D8E610 /* Pods-StorytimeGPT.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		5FABF78924D44E1588D61C01 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = Resources;
 			path = "";
+			sourceTree = "<group>";
+		};
+		6AACDA2FD8DE2361A2B388F4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F3DF92026C9C7BE285982102 /* Pods-StorytimeGPT.debug.xcconfig */,
+				E42584446B8EF1F65364D561 /* Pods-StorytimeGPT.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -108,8 +108,8 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				5FABF78924D44E1588D61C01 /* Resources */,
-				539CF0DA857E8C3608260B0E /* Pods */,
 				A239E3F373E8ECA543817AD6 /* ExpoModulesProviders */,
+				6AACDA2FD8DE2361A2B388F4 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -148,14 +148,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "StorytimeGPT" */;
 			buildPhases = (
-				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
+				87D918CD943F77A0D0FFDA55 /* [CP] Check Pods Manifest.lock */,
 				A38B2DCDECE411691B6C2606 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				848E05ECC4F9F9E896C79F95 /* [CP] Embed Pods Frameworks */,
+				16858B8C64347EC37E586D3C /* [CP] Embed Pods Frameworks */,
+				CCD91384C823BEB298980A0C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -231,7 +231,29 @@
 			shellPath = /bin/sh;
 			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n# The project root by default is one level up from the ios directory\nexport PROJECT_ROOT=\"$PROJECT_DIR\"/..\n\nif [[ \"$CONFIGURATION\" = *Debug* ]]; then\n  export SKIP_BUNDLING=1\nfi\nif [[ -z \"$ENTRY_FILE\" ]]; then\n  # Set the entry JS file using the bundler's entry resolution.\n  export ENTRY_FILE=\"$(\"$NODE_BINARY\" -e \"require('expo/scripts/resolveAppEntry')\" \"$PROJECT_ROOT\" ios absolute | tail -n 1)\"\nfi\n\nif [[ -z \"$CLI_PATH\" ]]; then\n  # Use Expo CLI\n  export CLI_PATH=\"$(\"$NODE_BINARY\" --print \"require.resolve('@expo/cli', { paths: [require.resolve('expo/package.json')] })\")\"\nfi\nif [[ -z \"$BUNDLE_COMMAND\" ]]; then\n  # Default Expo CLI command for bundling\n  export BUNDLE_COMMAND=\"export:embed\"\nfi\n\n# Source .xcode.env.updates if it exists to allow\n# SKIP_BUNDLING to be unset if needed\nif [[ -f \"$PODS_ROOT/../.xcode.env.updates\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.updates\"\nfi\n# Source local changes to allow overrides\n# if needed\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n`\"$NODE_BINARY\" --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/react-native-xcode.sh'\"`\n\n";
 		};
-		08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */ = {
+		16858B8C64347EC37E586D3C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StorytimeGPT/Pods-StorytimeGPT-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/React-Core-prebuilt/React.framework/React",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StorytimeGPT/Pods-StorytimeGPT-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		87D918CD943F77A0D0FFDA55 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,7 +275,31 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
+		A38B2DCDECE411691B6C2606 /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/.xcode.env",
+				"$(SRCROOT)/.xcode.env.local",
+				"$(SRCROOT)/StorytimeGPT/StorytimeGPT.entitlements",
+				"$(SRCROOT)/Pods/Target Support Files/Pods-StorytimeGPT/expo-configure-project.sh",
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/Pods/Target Support Files/Pods-StorytimeGPT/ExpoModulesProvider.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-StorytimeGPT/expo-configure-project.sh\"\n";
+		};
+		CCD91384C823BEB298980A0C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -287,52 +333,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StorytimeGPT/Pods-StorytimeGPT-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		848E05ECC4F9F9E896C79F95 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-StorytimeGPT/Pods-StorytimeGPT-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/React-Core-prebuilt/React.framework/React",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StorytimeGPT/Pods-StorytimeGPT-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A38B2DCDECE411691B6C2606 /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/.xcode.env",
-				"$(SRCROOT)/.xcode.env.local",
-				"$(SRCROOT)/StorytimeGPT/StorytimeGPT.entitlements",
-				"$(SRCROOT)/Pods/Target Support Files/Pods-StorytimeGPT/expo-configure-project.sh",
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(SRCROOT)/Pods/Target Support Files/Pods-StorytimeGPT/ExpoModulesProvider.swift",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-StorytimeGPT/expo-configure-project.sh\"\n";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -350,7 +350,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FF71CFF7F788718C8DFBD8BA /* Pods-StorytimeGPT.debug.xcconfig */;
+			baseConfigurationReference = F3DF92026C9C7BE285982102 /* Pods-StorytimeGPT.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -389,7 +389,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B128365AC07B4D38D5D8E610 /* Pods-StorytimeGPT.release.xcconfig */;
+			baseConfigurationReference = E42584446B8EF1F65364D561 /* Pods-StorytimeGPT.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

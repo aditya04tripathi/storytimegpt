@@ -1,5 +1,6 @@
 import * as FileSystem from "expo-file-system";
 import { Paths } from "expo-file-system";
+import { logError } from "./errorLogger";
 
 const CACHE_DIR = `${Paths.cache}media/`;
 const MAX_CACHE_SIZE = 100 * 1024 * 1024;
@@ -46,7 +47,10 @@ class MediaCacheService {
 				return { localUri: downloadResult.uri };
 			}
 		} catch (error) {
-			console.error("Cache download error:", error);
+			await logError(error, "low", {
+				action: "cache_download",
+				metadata: { url },
+			});
 		}
 
 		return { localUri: url };
@@ -76,7 +80,10 @@ class MediaCacheService {
 				this.cache.delete(url);
 				totalSize -= entry.size;
 			} catch (error) {
-				console.error("Cache eviction error:", error);
+				await logError(error, "low", {
+					action: "cache_eviction",
+					metadata: { url },
+				});
 			}
 		}
 	}
@@ -86,7 +93,9 @@ class MediaCacheService {
 			await FileSystem.deleteAsync(CACHE_DIR, { idempotent: true });
 			this.cache.clear();
 		} catch (error) {
-			console.error("Clear cache error:", error);
+			await logError(error, "low", {
+				action: "clear_cache",
+			});
 		}
 	}
 }

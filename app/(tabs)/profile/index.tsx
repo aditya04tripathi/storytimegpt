@@ -1,23 +1,28 @@
+import { Image } from "expo-image";
 import { doc, getDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { RefreshControl } from "react-native";
 import { Button } from "@/components/common/Button";
 import {
+	Badge,
 	Input,
 	Picker,
 	ScrollView,
-	Spacer,
 	Stack,
 	Text,
 	View,
 } from "@/components/ui";
+import { logError } from "@/services/errorLogger";
 import { auth, db } from "@/services/firebase";
 import { updateUserProfile } from "@/services/firebase/authService";
 import { setUser } from "@/services/firebase/firestoreService";
 import { useAuthStore } from "@/state/authStore";
+import { Colors } from "@/theme/colors";
 import { FIREBASE_COLLECTIONS } from "@/utils/constants";
+import { formatters } from "@/utils/formatters";
 
 export default function ProfileScreen() {
-	const { user, setFirebaseUser } = useAuthStore();
+	const { user, setFirebaseUser, refreshUser } = useAuthStore();
 	const [name, setName] = useState(user?.name || "");
 	const [languageProficiency, setLanguageProficiency] = useState<
 		"beginner" | "intermediate" | "advanced" | "native"
@@ -25,25 +30,52 @@ export default function ProfileScreen() {
 	const [ageGroup, setAgeGroup] = useState<
 		"child" | "teen" | "adult" | "senior"
 	>("child");
+	const [favoriteGenres, setFavoriteGenres] = useState<string[]>(
+		user?.favoriteGenres || [],
+	);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isRefreshing, setIsRefreshing] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-	useEffect(() => {
+	const loadUserData = useCallback(async () => {
 		if (!user?.id) return;
 
-		getDoc(doc(db, FIREBASE_COLLECTIONS.USERS, user.id))
-			.then((docSnapshot) => {
-				if (docSnapshot.exists()) {
-					const data = docSnapshot.data();
-					setName(data?.name || "");
-					setLanguageProficiency(data?.languageProficiency || "beginner");
-					setAgeGroup(data?.ageGroup || "child");
-				}
-			})
-			.catch((err) => {
-				console.error("Error loading user data:", err);
-			});
-	}, [user?.id]);
+		try {
+			const docSnapshot = await getDoc(
+				doc(db, FIREBASE_COLLECTIONS.USERS, user.id),
+			);
+			if (docSnapshot.exists()) {
+				const data = docSnapshot.data();
+				setName(data?.name || "");
+				setLanguageProficiency(data?.languageProficiency || "beginner");
+				setAgeGroup(data?.ageGroup || "child");
+				setFavoriteGenres(data?.favoriteGenres || []);
+			}
+			await refreshUser();
+		} catch (err) {
+			await logError(
+				err,
+				"medium",
+				{
+					screen: "profile",
+					action: "load_user_data",
+					userId: user?.id,
+				},
+				user?.id,
+			);
+		} finally {
+			setIsRefreshing(false);
+		}
+	}, [user?.id, refreshUser]);
+
+	useEffect(() => {
+		loadUserData();
+	}, [loadUserData]);
+
+	const onRefresh = useCallback(() => {
+		setIsRefreshing(true);
+		loadUserData();
+	}, [loadUserData]);
 
 	const handleUpdateProfile = async () => {
 		if (!user || !auth.currentUser) return;
@@ -58,6 +90,7 @@ export default function ProfileScreen() {
 				name: name,
 				languageProficiency: languageProficiency,
 				ageGroup: ageGroup,
+				favoriteGenres: favoriteGenres,
 			});
 
 			await setFirebaseUser(auth.currentUser);
@@ -65,40 +98,76 @@ export default function ProfileScreen() {
 			const errorMessage =
 				err instanceof Error ? err.message : "Failed to update profile";
 			setError(errorMessage);
-			console.error("Error updating profile:", err);
+			await logError(
+				err,
+				"high",
+				{
+					screen: "profile",
+					action: "update_profile",
+					userId: user?.id,
+				},
+				user?.id,
+			);
 		} finally {
 			setIsLoading(false);
 		}
 	};
 
+	const refreshControl = (
+		<RefreshControl
+			refreshing={isRefreshing}
+			onRefresh={onRefresh}
+			tintColor={Colors.primary}
+			colors={[Colors.primary]}
+		/>
+	);
+
 	if (!user) {
 		return (
-			<View variant="default" padding="lg">
-				<Stack direction="column" justify="center" align="stretch">
+			<ScrollView contentPadding="lg" refreshControl={refreshControl}>
+				<Stack direction="column" spacing="lg" align="stretch">
 					<Text variant="default" size="4xl" weight="bold">
 						User not found. Oops!
 					</Text>
 				</Stack>
-			</View>
+			</ScrollView>
 		);
 	}
 
 	return (
-		<ScrollView contentPadding="lg">
-			<Stack direction="column" justify="center" align="stretch">
-				<Text variant="default" size="4xl" weight="bold">
-					Hello, {user.name}!
-				</Text>
-				<Spacer size="md" />
-				<Stack align="stretch" justify="start" spacing="md">
+		<ScrollView contentPadding="lg" refreshControl={refreshControl}>
+			<Stack direction="column" spacing="lg" align="stretch">
+				<Stack direction="row" justify="between" align="center" spacing="md">
+					<Image
+						source={user.photoURL}
+						style={{ width: 100, height: 100, borderRadius: 50 }}
+						contentFit="cover"
+						contentPosition="center"
+						accessibilityLabel="User avatar"
+						placeholder={"hello"}
+					/>
+					<Stack direction="column" spacing="xs">
+						<Text variant="default" size="4xl" weight="bold">
+							Hello, {user.name?.split(" ")[0]}!
+						</Text>
+						<Text variant="muted" size="base">
+							Member since {formatters.date(user.createdAt)}
+						</Text>
+					</Stack>
+				</Stack>
+				<Stack direction="column" spacing="md" align="stretch">
 					{error && (
 						<View
 							variant="card"
 							padding="md"
 							rounded="md"
-							style={{ backgroundColor: "#541c15" }}
+							style={{ backgroundColor: Colors.destructive }}
 						>
-							<Text variant="default" size="sm" style={{ color: "#ede9e8" }}>
+							<Text
+								variant="default"
+								size="sm"
+								style={{ color: Colors.destructiveForeground }}
+							>
 								{error}
 							</Text>
 						</View>
@@ -110,10 +179,29 @@ export default function ProfileScreen() {
 					/>
 					<Input
 						label="Email Address"
-						onChangeText={(text) => {}}
+						onChangeText={() => {}}
 						value={user.email}
 						disabled
 					/>
+					<Input
+						label="Favorite Genres"
+						onChangeText={(text) => {
+							setFavoriteGenres(text.split(","));
+						}}
+						value={favoriteGenres.join(", ")}
+						placeholder="Enter your favorite genres separated by commas"
+						multiline
+						numberOfLines={4}
+					/>
+					<Stack direction="row">
+						{user.favoriteGenres.map((genre) => (
+							<Badge key={genre} variant="primary">
+								<Text variant="default" size="sm">
+									{genre}
+								</Text>
+							</Badge>
+						))}
+					</Stack>
 					<Picker
 						label="Language Proficiency"
 						selectedValue={languageProficiency}
@@ -143,14 +231,18 @@ export default function ProfileScreen() {
 						]}
 					/>
 				</Stack>
-				<Spacer size="xl" />
-				<Button
-					loading={isLoading}
-					title="Update Profile"
-					onPress={handleUpdateProfile}
-					variant="primary"
-					disabled={isLoading}
-				/>
+				<Stack direction="column" spacing="xs" align="stretch">
+					<Button
+						loading={isLoading}
+						title="Update Profile"
+						onPress={handleUpdateProfile}
+						variant="primary"
+						disabled={isLoading}
+					/>
+					<Text style={{ textAlign: "right" }} variant="muted" size="sm">
+						Last updated {formatters.timeAgo(user.updatedAt)}
+					</Text>
+				</Stack>
 			</Stack>
 		</ScrollView>
 	);

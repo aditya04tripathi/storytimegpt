@@ -82,6 +82,8 @@ PODS:
     - Yoga
   - ExpoSecureStore (15.0.7):
     - ExpoModulesCore
+  - ExpoSpeech (14.0.7):
+    - ExpoModulesCore
   - ExpoSplashScreen (31.0.11):
     - ExpoModulesCore
   - ExpoSQLite (16.0.9):
@@ -1976,6 +1978,8 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - RNSha256 (1.4.10):
+    - React-Core
   - RNWorklets (0.5.1):
     - hermes-engine
     - RCTRequired
@@ -2077,6 +2081,7 @@ DEPENDENCIES:
   - ExpoLinking (from `../node_modules/expo-linking/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoSecureStore (from `../node_modules/expo-secure-store/ios`)
+  - ExpoSpeech (from `../node_modules/expo-speech/ios`)
   - ExpoSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - ExpoSQLite (from `../node_modules/expo-sqlite/ios`)
   - ExpoSymbols (from `../node_modules/expo-symbols/ios`)
@@ -2154,6 +2159,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSha256 (from `../node_modules/react-native-sha256`)
   - RNWorklets (from `../node_modules/react-native-worklets`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -2200,6 +2206,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-modules-core"
   ExpoSecureStore:
     :path: "../node_modules/expo-secure-store/ios"
+  ExpoSpeech:
+    :path: "../node_modules/expo-speech/ios"
   ExpoSplashScreen:
     :path: "../node_modules/expo-splash-screen/ios"
   ExpoSQLite:
@@ -2353,6 +2361,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSha256:
+    :path: "../node_modules/react-native-sha256"
   RNWorklets:
     :path: "../node_modules/react-native-worklets"
   Yoga:
@@ -2375,6 +2385,7 @@ SPEC CHECKSUMS:
   ExpoLinking: 77455aa013e9b6a3601de03ecfab09858ee1b031
   ExpoModulesCore: e8ec7f8727caf51a49d495598303dd420ca994bf
   ExpoSecureStore: 9c6571fe3fcb045a671c4011c451546eaaab98fd
+  ExpoSpeech: 18a7f92a932028e16d3df1891377a8b626ab5cc0
   ExpoSplashScreen: 268b2f128dc04284c21010540a6c4dd9f95003e3
   ExpoSQLite: b312b02c8b77ab55951396e6cd13992f8db9215f
   ExpoSymbols: 1ae04ce686de719b9720453b988d8bc5bf776c68
@@ -2454,6 +2465,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 2914750df066d89bf9d8f48a10ad5f0051108ac3
   RNReanimated: 1442a577e066e662f0ce1cd1864a65c8e547aee0
   RNScreens: d8d6f1792f6e7ac12b0190d33d8d390efc0c1845
+  RNSha256: 4d35f112e967f58273d625a19376f4eafc72bd5c
   RNWorklets: 76fce72926e28e304afb44f0da23b2d24f2c1fa0
   SDWebImage: d0184764be51240d49c761c37f53dd017e1ccaaf
   SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57

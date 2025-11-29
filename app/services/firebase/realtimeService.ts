@@ -1,4 +1,11 @@
-import { off, onValue, ref, set, type Unsubscribe } from "firebase/database";
+import {
+	off,
+	onValue,
+	ref,
+	remove,
+	set,
+	type Unsubscribe,
+} from "firebase/database";
 import { realtimeDb } from "../firebase";
 
 export function subscribeToStoryStatus(
@@ -91,13 +98,13 @@ export async function setStoryErrorRealtime(
 export function subscribeToUserNotificationsRealtime(
 	userId: string,
 	callback: (
-		notifications: Array<{
+		notifications: {
 			id: string;
 			message: string;
 			type: string;
 			timestamp: number;
 			read: boolean;
-		}>,
+		}[],
 	) => void,
 ): Unsubscribe {
 	const notificationsRef = ref(realtimeDb, `users/${userId}/notifications`);
@@ -124,4 +131,15 @@ export function subscribeToUserNotificationsRealtime(
 export function unsubscribeRealtime(path: string): void {
 	const dbRef = ref(realtimeDb, path);
 	off(dbRef);
+}
+
+export async function deleteStoryJobRealtime(jobId: string): Promise<void> {
+	try {
+		const jobRef = ref(realtimeDb, `storyJobs/${jobId}`);
+		await remove(jobRef);
+	} catch (error: any) {
+		throw new Error(
+			error.message || "Failed to delete story job from Realtime Database",
+		);
+	}
 }

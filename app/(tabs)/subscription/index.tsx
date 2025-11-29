@@ -209,11 +209,11 @@ export default function SubscriptionScreen() {
 		<View variant="default" style={{ flex: 1 }}>
 			<ScrollView contentPadding="lg" contentContainerStyle={styles.container}>
 				<Stack direction="column" spacing="none" align="stretch">
-					<Stack direction="column" spacing="xs" align="center">
+					<Stack direction="column" spacing="xs" align="start">
 						<Text variant="default" size="4xl" weight="bold">
 							Subscription Plans
 						</Text>
-						<Text variant="muted" size="base" style={{ textAlign: "center" }}>
+						<Text variant="muted" size="base">
 							Choose the plan that&apos;s right for you
 						</Text>
 					</Stack>

@@ -1,3 +1,4 @@
+import { ref, set } from "firebase/database";
 import {
 	collection,
 	deleteDoc,
@@ -13,7 +14,8 @@ import {
 	where,
 } from "firebase/firestore";
 import type { Story, StorySummary, User } from "@/api/types";
-import { db } from "../firebase";
+import { logError } from "@/services/errorLogger";
+import { db, realtimeDb } from "../firebase";
 
 const COLLECTIONS = {
 	USERS: "users",
@@ -34,6 +36,13 @@ export async function getUser(userId: string): Promise<User | null> {
 			email: data.email,
 			name: data.name,
 			subscriptionTier: data.subscriptionTier || "free",
+			photoURL: data.photoURL,
+			ageGroup: data.ageGroup || "child",
+			languageProficiency: data.languageProficiency || "beginner",
+			favoriteGenres: data.favoriteGenres || [],
+			lastLoginAt: data.lastLoginAt,
+			createdAt: data.createdAt,
+			updatedAt: data.updatedAt,
 		} as User;
 	} catch (error: any) {
 		throw new Error(error.message || "Failed to get user");
@@ -99,6 +108,7 @@ export async function createStory(
 	try {
 		const storiesRef = collection(db, COLLECTIONS.STORIES);
 		const storyRef = doc(storiesRef);
+		const storyId = storyRef.id;
 
 		await setDoc(storyRef, {
 			userId,
@@ -112,7 +122,19 @@ export async function createStory(
 			updatedAt: Timestamp.now(),
 		});
 
-		return storyRef.id;
+		const userRef = doc(db, COLLECTIONS.USERS, userId);
+		const userDoc = await getDoc(userRef);
+		const userData = userDoc.data();
+		const storyIds = userData?.storyIds || [];
+
+		if (!storyIds.includes(storyId)) {
+			await updateDoc(userRef, {
+				storyIds: [...storyIds, storyId],
+				updatedAt: Timestamp.now(),
+			});
+		}
+
+		return storyId;
 	} catch (error: any) {
 		throw new Error(error.message || "Failed to create story");
 	}
@@ -147,6 +169,8 @@ export async function getStory(storyId: string): Promise<Story | null> {
 			createdAt:
 				data.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
 			status: data.status || "pending",
+			settingPlace: data.settingPlace || "",
+			protagonistName: data.protagonistName || "",
 		} as Story;
 	} catch (error: any) {
 		throw new Error(error.message || "Failed to get story");
@@ -185,6 +209,20 @@ export async function updateStory(
 ): Promise<void> {
 	try {
 		const storyRef = doc(db, COLLECTIONS.STORIES, storyId);
+		const storyDoc = await getDoc(storyRef);
+
+		if (!storyDoc.exists()) {
+			await logError(
+				new Error(`Story ${storyId} does not exist, skipping update`),
+				"low",
+				{
+					action: "update_story",
+					metadata: { storyId },
+				},
+			);
+			return;
+		}
+
 		const firestoreUpdates: any = {
 			updatedAt: Timestamp.now(),
 		};
@@ -201,6 +239,21 @@ export async function updateStory(
 
 		await updateDoc(storyRef, firestoreUpdates);
 	} catch (error: any) {
+		if (error.message?.includes("No document to update")) {
+			await logError(
+				new Error(`Story ${storyId} does not exist, skipping update`),
+				"low",
+				{
+					action: "update_story",
+					metadata: { storyId },
+				},
+			);
+			return;
+		}
+		await logError(error, "high", {
+			action: "update_story",
+			metadata: { storyId },
+		});
 		throw new Error(error.message || "Failed to update story");
 	}
 }
@@ -212,6 +265,21 @@ export async function updateStoryStatus(
 	try {
 		await updateStory(storyId, { status });
 	} catch (error: any) {
+		if (error.message?.includes("does not exist")) {
+			await logError(
+				new Error(`Story ${storyId} does not exist, skipping status update`),
+				"low",
+				{
+					action: "update_story_status",
+					metadata: { storyId, status },
+				},
+			);
+			return;
+		}
+		await logError(error, "high", {
+			action: "update_story_status",
+			metadata: { storyId, status },
+		});
 		throw new Error(error.message || "Failed to update story status");
 	}
 }
@@ -221,6 +289,58 @@ export async function deleteStory(storyId: string): Promise<void> {
 		await deleteDoc(doc(db, COLLECTIONS.STORIES, storyId));
 	} catch (error: any) {
 		throw new Error(error.message || "Failed to delete story");
+	}
+}
+
+export async function removeStoryFromUser(
+	userId: string,
+	storyId: string,
+): Promise<void> {
+	try {
+		const userRef = doc(db, COLLECTIONS.USERS, userId);
+		const userDoc = await getDoc(userRef);
+		const userData = userDoc.data();
+		const storyIds = userData?.storyIds || [];
+
+		if (storyIds.includes(storyId)) {
+			await updateDoc(userRef, {
+				storyIds: storyIds.filter((id: string) => id !== storyId),
+				updatedAt: Timestamp.now(),
+			});
+		}
+	} catch (error: any) {
+		throw new Error(error.message || "Failed to remove story from user");
+	}
+}
+
+export async function deleteStoryJob(jobId: string): Promise<void> {
+	try {
+		await deleteDoc(doc(db, COLLECTIONS.STORY_JOBS, jobId));
+	} catch (error: any) {
+		throw new Error(error.message || "Failed to delete story job");
+	}
+}
+
+export async function cleanupFailedStoryGeneration(
+	userId: string,
+	storyId: string,
+	jobId: string,
+): Promise<void> {
+	try {
+		await Promise.all([
+			deleteStory(storyId),
+			removeStoryFromUser(userId, storyId),
+			deleteStoryJob(jobId),
+		]);
+	} catch (error: any) {
+		await logError(error, "critical", {
+			action: "cleanup_failed_story_generation",
+			metadata: { userId, storyId, jobId },
+			userId,
+		}, userId);
+		throw new Error(
+			error.message || "Failed to cleanup failed story generation",
+		);
 	}
 }
 
@@ -249,8 +369,20 @@ export async function createStoryJob(
 			updatedAt: Timestamp.now(),
 		});
 
+		const jobId = jobRef.id;
+
+		const statusRef = ref(realtimeDb, `storyJobs/${jobId}/status`);
+		const progressRef = ref(realtimeDb, `storyJobs/${jobId}/progress`);
+		const userIdRef = ref(realtimeDb, `storyJobs/${jobId}/userId`);
+
+		await Promise.all([
+			set(statusRef, "pending"),
+			set(progressRef, 0),
+			set(userIdRef, userId),
+		]);
+
 		return {
-			jobId: jobRef.id,
+			jobId,
 			storyId,
 		};
 	} catch (error: any) {

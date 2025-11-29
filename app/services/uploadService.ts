@@ -1,4 +1,5 @@
 import * as FileSystem from "expo-file-system";
+import { logError } from "./errorLogger";
 import {
 	uploadAudio,
 	uploadImage,
@@ -53,7 +54,10 @@ export class UploadService {
 					throw new Error(`Unsupported file type: ${type}`);
 			}
 		} catch (error) {
-			console.error("Upload error:", error);
+			await logError(error, "high", {
+				action: "upload_file",
+				metadata: { type, storyId, index },
+			});
 			throw error instanceof Error ? error : new Error("Failed to upload file");
 		}
 	}

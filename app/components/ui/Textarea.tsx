@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Input } from "./Input";
 
 type TextareaProps = {
@@ -8,6 +9,7 @@ type TextareaProps = {
 	onChangeText: (text: string) => void;
 	numberOfLines?: number;
 	disabled?: boolean;
+	right?: ReactNode;
 };
 
 export function Textarea(props: TextareaProps) {

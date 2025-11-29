@@ -53,6 +53,8 @@ export function Text({
 const styles = StyleSheet.create({
 	base: {
 		color: Colors.foreground,
+		padding: 0,
+		margin: 0,
 	},
 	default: {
 		color: Colors.foreground,

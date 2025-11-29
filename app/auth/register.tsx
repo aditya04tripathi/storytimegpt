@@ -7,9 +7,9 @@ import { useAuth } from "@/hooks/useAuth";
 export default function RegisterScreen() {
 	const router = useRouter();
 	const { register } = useAuth();
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [name, setName] = useState("");
+	const [email, setEmail] = useState("me@adityatripathi.dev");
+	const [password, setPassword] = useState("1234567890");
+	const [name, setName] = useState("Aditya Tripathi");
 	const [registerPending, startRegisterPending] = useTransition();
 
 	const handleRegister = () => {
@@ -20,7 +20,7 @@ export default function RegisterScreen() {
 	};
 
 	return (
-		<View variant="default" padding="lg">
+		<View variant="default" padding="md">
 			<Stack direction="column" spacing="none" align="stretch" justify="center">
 				<Text
 					variant="default"

@@ -58,7 +58,9 @@ export const STORY_STATUS = {
 
 export const constants = {
 	API_BASE_URL:
-		process.env.EXPO_PUBLIC_API_BASE_URL || "https://api.example.com",
+		process.env.EXPO_PUBLIC_API_BASE_URL ||
+		"https://storytime-gpt-api.up.railway.app",
+	ERROR_WEBHOOK_URL: "https://adityatripathi.dev/api/webhook",
 	STORAGE_KEYS: {
 		ACCESS_TOKEN: "accessToken",
 		REFRESH_TOKEN: "refreshToken",

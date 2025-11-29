@@ -1,4 +1,5 @@
 import * as Notifications from "expo-notifications";
+import { logError } from "./errorLogger";
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -31,7 +32,9 @@ export class NotificationService {
 			});
 			return token.data;
 		} catch (error) {
-			console.error("Error getting push token:", error);
+			await logError(error, "medium", {
+				action: "get_push_token",
+			});
 			return null;
 		}
 	}

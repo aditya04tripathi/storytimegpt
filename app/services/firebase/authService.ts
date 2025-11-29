@@ -9,6 +9,7 @@ import {
 	type Unsubscribe,
 	updateProfile,
 } from "firebase/auth";
+import { logError } from "../errorLogger";
 import { auth } from "../firebase";
 
 export async function signIn(
@@ -104,13 +105,19 @@ export function onAuthStateChange(
 				const token = await user.getIdToken();
 				await SecureStore.setItemAsync("firebaseIdToken", token);
 			} catch (error) {
-				console.error("Failed to store Firebase token:", error);
+				await logError(error, "medium", {
+					action: "store_firebase_token",
+					metadata: { userId: user.uid },
+					userId: user.uid,
+				}, user.uid);
 			}
 		} else {
 			try {
 				await SecureStore.deleteItemAsync("firebaseIdToken");
 			} catch (error) {
-				console.error("Failed to clear Firebase token:", error);
+				await logError(error, "low", {
+					action: "clear_firebase_token",
+				});
 			}
 		}
 		callback(user);

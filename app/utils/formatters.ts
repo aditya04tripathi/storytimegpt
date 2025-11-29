@@ -1,8 +1,33 @@
-import type { Timestamp } from "firebase/firestore";
+import type { FieldValue, Timestamp } from "firebase/firestore";
+
+function fieldValueToDate(value: FieldValue | Date | string): Date {
+	if (value instanceof Date) {
+		return value;
+	}
+	if (typeof value === "string") {
+		return new Date(value);
+	}
+	if (value && typeof value === "object" && "toDate" in value) {
+		return (value as Timestamp).toDate();
+	}
+	return new Date();
+}
 
 export const formatters = {
-	date: (date: string | Date): string => {
-		const d = typeof date === "string" ? new Date(date) : date;
+	date: (
+		date: string | Date | FieldValue,
+		{ time = false }: { time?: boolean } = {},
+	): string => {
+		const d = fieldValueToDate(date);
+		if (time) {
+			return d.toLocaleString("en-US", {
+				year: "numeric",
+				month: "long",
+				day: "numeric",
+				hour: "2-digit",
+				minute: "2-digit",
+			});
+		}
 		return d.toLocaleDateString("en-US", {
 			year: "numeric",
 			month: "long",
@@ -10,8 +35,8 @@ export const formatters = {
 		});
 	},
 
-	timeAgo: (date: string | Date): string => {
-		const d = typeof date === "string" ? new Date(date) : date;
+	timeAgo: (date: string | Date | FieldValue): string => {
+		const d = fieldValueToDate(date);
 		const now = new Date();
 		const diffInSeconds = Math.floor((now.getTime() - d.getTime()) / 1000);
 

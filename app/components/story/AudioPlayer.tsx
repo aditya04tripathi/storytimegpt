@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "@/components/ui";
+import { logError } from "@/services/errorLogger";
 import { Colors } from "@/theme/colors";
 import { Spacing } from "@/theme/spacing";
 
@@ -30,7 +31,11 @@ export function AudioPlayer({ source }: AudioPlayerProps) {
 				setDuration(status.durationMillis || 0);
 			}
 		} catch (error) {
-			console.error("Error loading audio:", error);
+			await logError(error, "medium", {
+				component: "AudioPlayer",
+				action: "load_audio",
+				metadata: { source: source.uri },
+			});
 		}
 	};
 
