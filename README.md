@@ -43,26 +43,27 @@ Built with **Expo** for seamless cross-platform development (iOS, Android, Web).
   app.json
   package.json
   tsconfig.json
-  /src
-    /api
-      axios.ts              # Axios instance with interceptors
-      endpoints.ts          # API endpoint constants
-      types.ts              # TypeScript types matching backend
-    /app
-      _layout.tsx           # Expo Router root layout
-      index.tsx             # Home screen
-      auth/
-        login.tsx
-        register.tsx
-      library/
-        index.tsx           # Story library list
-        [storyId].tsx       # Individual story reader
-      subscription/
-        index.tsx
-      profile/
-        index.tsx
-      modals/
-        payment.tsx
+  /api
+    axios.ts              # Axios instance with interceptors
+    endpoints.ts          # API endpoint constants
+    types.ts              # TypeScript types matching backend
+  /app
+    _layout.tsx           # Expo Router root layout
+    index.tsx             # Home screen
+    auth/
+      login.tsx
+      register.tsx
+    library/
+      index.tsx           # Story library list
+      [storyId].tsx       # Individual story reader
+    subscription/
+      index.tsx
+    profile/
+      index.tsx
+    settings/
+      index.tsx
+    modals/
+      payment.tsx
     /components
       /common
         Button.tsx
@@ -94,8 +95,7 @@ Built with **Expo** for seamless cross-platform development (iOS, Android, Web).
       constants.ts
     /assets
     /styles
-    /types
-      index.d.ts
+    index.d.ts
   /tests
   README.md
 ```

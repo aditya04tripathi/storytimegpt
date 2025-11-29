@@ -1,39 +1,97 @@
 {
   "expo": {
-    "name": "storytimegpt",
+    "name": "StorytimeGPT",
     "slug": "storytimegpt",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "src/assets/images/icon.png",
+    "icon": "app/assets/images/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "scheme": "storytimegpt",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.storytimegpt"
+      "bundleIdentifier": "com.adityatripathi.storytimegpt",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Allow StorytimeGPT to access your microphone for audio recording and playback.",
+        "NSCameraUsageDescription": "Allow StorytimeGPT to access your camera for media capture.",
+        "NSPhotoLibraryUsageDescription": "Allow StorytimeGPT to access your photo library to save and share story images.",
+        "NSPhotoLibraryAddUsageDescription": "Allow StorytimeGPT to save images to your photo library.",
+        "UIBackgroundModes": ["audio", "fetch", "remote-notification"]
+      },
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "src/assets/images/adaptive-icon.png",
+        "foregroundImage": "app/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.storytimegpt"
+      "package": "com.adityatripathi.storytimegpt",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.VIBRATE",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.WAKE_LOCK"
+      ]
     },
     "web": {
-      "favicon": "src/assets/images/favicon.png"
+      "favicon": "app/assets/images/favicon.png",
+      "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id-here"
+      }
     },
     "plugins": [
-      "expo-asset",
+      [
+        "expo-asset",
+        {
+          "assets": ["app/assets/"]
+        }
+      ],
       [
         "expo-splash-screen",
         {
           "backgroundColor": "#ffffff",
-          "image": "src/assets/images/splash-icon.png"
+          "image": "app/assets/images/splash-icon.png"
         }
       ],
       "expo-router",
-      "expo-secure-store",
-      "expo-sqlite"
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true,
+          "faceIDPermission": "Allow StorytimeGPT to access Face ID biometric data."
+        }
+      ],
+      [
+        "expo-sqlite",
+        {
+          "enableForExpoGo": true
+        }
+      ],
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow StorytimeGPT to access your microphone for audio recording."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./app/assets/images/icon.png",
+          "color": "#ffffff",
+          "sounds": [],
+          "mode": "production"
+        }
+      ]
     ]
   }
 }

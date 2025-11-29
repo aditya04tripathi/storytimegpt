@@ -1,0 +1,49 @@
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+	handleNotification: async () => ({
+		shouldShowAlert: true,
+		shouldPlaySound: true,
+		shouldSetBadge: true,
+	}),
+});
+
+export class NotificationService {
+	async requestPermissions(): Promise<boolean> {
+		const { status: existingStatus } =
+			await Notifications.getPermissionsAsync();
+		let finalStatus = existingStatus;
+
+		if (existingStatus !== "granted") {
+			const { status } = await Notifications.requestPermissionsAsync();
+			finalStatus = status;
+		}
+
+		return finalStatus === "granted";
+	}
+
+	async getExpoPushToken(): Promise<string | null> {
+		try {
+			const token = await Notifications.getExpoPushTokenAsync({
+				projectId: "your-project-id", // TODO: Replace with actual project ID
+			});
+			return token.data;
+		} catch (error) {
+			console.error("Error getting push token:", error);
+			return null;
+		}
+	}
+
+	async scheduleLocalNotification(title: string, body: string, data?: any) {
+		await Notifications.scheduleNotificationAsync({
+			content: {
+				title,
+				body,
+				data,
+			},
+			trigger: null, // Show immediately
+		});
+	}
+}
+
+export const notificationService = new NotificationService();
