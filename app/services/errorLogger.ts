@@ -100,27 +100,46 @@ export async function logError(
 		const errorDetails = getErrorDetails(error);
 		const errorSeverity = severity || determineSeverity(error, context);
 
-		const errorLog: Omit<ErrorLog, "id" | "timestamp"> = {
+		const contextData: ErrorContext = {};
+		if (userId || context?.userId) {
+			contextData.userId = userId || context?.userId;
+		}
+		if (context?.screen) {
+			contextData.screen = context.screen;
+		}
+		if (context?.action) {
+			contextData.action = context.action;
+		}
+		if (context?.component) {
+			contextData.component = context.component;
+		}
+		if (context?.metadata) {
+			contextData.metadata = context.metadata;
+		}
+
+		const errorData: Record<string, unknown> = {
 			message: errorDetails.message,
 			error: errorDetails.error,
-			stack: errorDetails.stack,
 			severity: errorSeverity,
-			context: {
-				userId: userId || context?.userId,
-				...context,
-			},
-			userAgent:
-				typeof navigator !== "undefined" ? navigator.userAgent : undefined,
+			context: contextData,
 			platform: "react-native",
 			appVersion: "1.0.0",
 			resolved: false,
+			timestamp: serverTimestamp(),
 		};
 
+		if (errorDetails.stack) {
+			errorData.stack = errorDetails.stack;
+		}
+
+		const userAgent =
+			typeof navigator !== "undefined" ? navigator.userAgent : undefined;
+		if (userAgent) {
+			errorData.userAgent = userAgent;
+		}
+
 		const errorRef = doc(collection(db, COLLECTION_NAME));
-		await setDoc(errorRef, {
-			...errorLog,
-			timestamp: serverTimestamp(),
-		});
+		await setDoc(errorRef, errorData);
 
 		try {
 			await fetch(constants.ERROR_WEBHOOK_URL, {
@@ -133,15 +152,14 @@ export async function logError(
 					error: errorDetails.error,
 					stack: errorDetails.stack,
 					severity: errorSeverity,
-					context: errorLog.context,
-					userAgent: errorLog.userAgent,
-					platform: errorLog.platform,
-					appVersion: errorLog.appVersion,
+					context: contextData,
+					userAgent: userAgent,
+					platform: "react-native",
+					appVersion: "1.0.0",
 					timestamp: new Date().toISOString(),
 				}),
 			});
-		} catch {
-		}
+		} catch {}
 	} catch {}
 }
 

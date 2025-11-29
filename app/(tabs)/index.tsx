@@ -13,6 +13,7 @@ import {
 	Textarea,
 	View,
 } from "@/components/ui";
+import { logError } from "@/services/errorLogger";
 import {
 	cleanupFailedStoryGeneration,
 	createStoryJob,
@@ -26,7 +27,6 @@ import {
 	subscribeToStoryStatus,
 	updateStoryStatusRealtime,
 } from "@/services/firebase/realtimeService";
-import { logError } from "@/services/errorLogger";
 import { generateStory } from "@/services/storyGenerationService";
 import { useAuthStore } from "@/state/authStore";
 import { Colors } from "@/theme/colors";
@@ -211,12 +211,17 @@ export default function HomeScreen() {
 				await updateStoryStatusRealtime(jobId, "processing");
 				await updateStoryStatus(storyId, "processing");
 			} catch (updateError) {
-				await logError(updateError, "low", {
-					screen: "home",
-					action: "update_story_status",
-					metadata: { jobId, storyId, status: "processing" },
-					userId: user?.id,
-				}, user?.id);
+				await logError(
+					updateError,
+					"low",
+					{
+						screen: "home",
+						action: "update_story_status",
+						metadata: { jobId, storyId, status: "processing" },
+						userId: user?.id,
+					},
+					user?.id,
+				);
 			}
 			setGenerationProgress(10);
 
@@ -243,12 +248,17 @@ export default function HomeScreen() {
 			if (!response.okay) {
 				const errorMsg = response.error || "Story generation failed";
 				const error = new Error(errorMsg);
-				await logError(error, "high", {
-					screen: "home",
-					action: "story_generation",
-					metadata: { request: storyRequest, response },
-					userId: user?.id,
-				}, user?.id);
+				await logError(
+					error,
+					"high",
+					{
+						screen: "home",
+						action: "story_generation",
+						metadata: { request: storyRequest, response },
+						userId: user?.id,
+					},
+					user?.id,
+				);
 				throw error;
 			}
 
@@ -256,24 +266,34 @@ export default function HomeScreen() {
 				const errorMsg =
 					"Story generation succeeded but no story content was returned";
 				const error = new Error(errorMsg);
-				await logError(error, "high", {
-					screen: "home",
-					action: "story_generation",
-					metadata: { request: storyRequest, response },
-					userId: user?.id,
-				}, user?.id);
+				await logError(
+					error,
+					"high",
+					{
+						screen: "home",
+						action: "story_generation",
+						metadata: { request: storyRequest, response },
+						userId: user?.id,
+					},
+					user?.id,
+				);
 				throw error;
 			}
 
 			if (!response.title || response.title.trim().length === 0) {
 				const errorMsg = "Story generation succeeded but no title was returned";
 				const error = new Error(errorMsg);
-				await logError(error, "high", {
-					screen: "home",
-					action: "story_generation",
-					metadata: { request: storyRequest, response },
-					userId: user?.id,
-				}, user?.id);
+				await logError(
+					error,
+					"high",
+					{
+						screen: "home",
+						action: "story_generation",
+						metadata: { request: storyRequest, response },
+						userId: user?.id,
+					},
+					user?.id,
+				);
 				throw error;
 			}
 
@@ -284,13 +304,20 @@ export default function HomeScreen() {
 
 			const storyExistsBeforeUpdate = await getStory(storyId);
 			if (!storyExistsBeforeUpdate) {
-				const error = new Error("Story was not found in Firestore before update");
-				await logError(error, "high", {
-					screen: "home",
-					action: "update_story",
-					metadata: { storyId, jobId },
-					userId: user?.id,
-				}, user?.id);
+				const error = new Error(
+					"Story was not found in Firestore before update",
+				);
+				await logError(
+					error,
+					"high",
+					{
+						screen: "home",
+						action: "update_story",
+						metadata: { storyId, jobId },
+						userId: user?.id,
+					},
+					user?.id,
+				);
 				if (user?.id) {
 					try {
 						await Promise.all([
@@ -298,12 +325,17 @@ export default function HomeScreen() {
 							deleteStoryJob(jobId),
 						]);
 					} catch (cleanupError) {
-						await logError(cleanupError, "medium", {
-							screen: "home",
-							action: "cleanup_job",
-							metadata: { storyId, jobId },
-							userId: user?.id,
-						}, user?.id);
+						await logError(
+							cleanupError,
+							"medium",
+							{
+								screen: "home",
+								action: "cleanup_job",
+								metadata: { storyId, jobId },
+								userId: user?.id,
+							},
+							user?.id,
+						);
 					}
 				}
 				throw error;
@@ -327,12 +359,17 @@ export default function HomeScreen() {
 					updateError.message?.includes("does not exist") ||
 					updateError.message?.includes("No document to update")
 				) {
-					await logError(updateError, "medium", {
-						screen: "home",
-						action: "update_story",
-						metadata: { storyId, jobId, reason: "story_deleted" },
-						userId: user?.id,
-					}, user?.id);
+					await logError(
+						updateError,
+						"medium",
+						{
+							screen: "home",
+							action: "update_story",
+							metadata: { storyId, jobId, reason: "story_deleted" },
+							userId: user?.id,
+						},
+						user?.id,
+					);
 					if (user?.id) {
 						try {
 							await Promise.all([
@@ -340,34 +377,49 @@ export default function HomeScreen() {
 								deleteStoryJob(jobId),
 							]);
 						} catch (cleanupError) {
-							await logError(cleanupError, "medium", {
-								screen: "home",
-								action: "cleanup_job",
-								metadata: { storyId, jobId },
-								userId: user?.id,
-							}, user?.id);
+							await logError(
+								cleanupError,
+								"medium",
+								{
+									screen: "home",
+									action: "cleanup_job",
+									metadata: { storyId, jobId },
+									userId: user?.id,
+								},
+								user?.id,
+							);
 						}
 					}
 					throw new Error("Story was deleted during generation");
 				}
-				await logError(updateError, "high", {
-					screen: "home",
-					action: "update_story",
-					metadata: { storyId, jobId },
-					userId: user?.id,
-				}, user?.id);
+				await logError(
+					updateError,
+					"high",
+					{
+						screen: "home",
+						action: "update_story",
+						metadata: { storyId, jobId },
+						userId: user?.id,
+					},
+					user?.id,
+				);
 				throw updateError;
 			}
 		} catch (err) {
 			const errorMessage =
 				err instanceof Error ? err.message : "Story generation failed";
 
-			await logError(err, "critical", {
-				screen: "home",
-				action: "story_generation",
-				metadata: { jobId, storyId, attempt },
-				userId: user?.id,
-			}, user?.id);
+			await logError(
+				err,
+				"critical",
+				{
+					screen: "home",
+					action: "story_generation",
+					metadata: { jobId, storyId, attempt },
+					userId: user?.id,
+				},
+				user?.id,
+			);
 
 			const isRetryableError =
 				errorMessage.includes("500") ||
@@ -392,12 +444,17 @@ export default function HomeScreen() {
 						deleteStoryJobRealtime(jobId),
 					]);
 				} catch (cleanupError) {
-					await logError(cleanupError, "high", {
-						screen: "home",
-						action: "cleanup_failed_story",
-						metadata: { storyId, jobId },
-						userId: user?.id,
-					}, user?.id);
+					await logError(
+						cleanupError,
+						"high",
+						{
+							screen: "home",
+							action: "cleanup_failed_story",
+							metadata: { storyId, jobId },
+							userId: user?.id,
+						},
+						user?.id,
+					);
 				}
 			} else {
 				try {
@@ -407,12 +464,17 @@ export default function HomeScreen() {
 							await updateStoryStatusRealtime(jobId, "failed");
 							await updateStoryStatus(storyId, "failed");
 						} catch (statusUpdateError) {
-							await logError(statusUpdateError, "medium", {
-								screen: "home",
-								action: "update_story_status",
-								metadata: { storyId, jobId, status: "failed" },
-								userId: user?.id,
-							}, user?.id);
+							await logError(
+								statusUpdateError,
+								"medium",
+								{
+									screen: "home",
+									action: "update_story_status",
+									metadata: { storyId, jobId, status: "failed" },
+									userId: user?.id,
+								},
+								user?.id,
+							);
 						}
 					} else {
 						if (user?.id) {
@@ -422,34 +484,49 @@ export default function HomeScreen() {
 									deleteStoryJob(jobId),
 								]);
 							} catch (cleanupError) {
-								await logError(cleanupError, "medium", {
-									screen: "home",
-									action: "cleanup_job",
-									metadata: { storyId, jobId },
-									userId: user?.id,
-								}, user?.id);
+								await logError(
+									cleanupError,
+									"medium",
+									{
+										screen: "home",
+										action: "cleanup_job",
+										metadata: { storyId, jobId },
+										userId: user?.id,
+									},
+									user?.id,
+								);
 							}
 						}
 					}
 				} catch (checkError) {
-					await logError(checkError, "high", {
-						screen: "home",
-						action: "check_story_exists",
-						metadata: { storyId, jobId },
-						userId: user?.id,
-					}, user?.id);
+					await logError(
+						checkError,
+						"high",
+						{
+							screen: "home",
+							action: "check_story_exists",
+							metadata: { storyId, jobId },
+							userId: user?.id,
+						},
+						user?.id,
+					);
 					try {
 						await Promise.all([
 							deleteStoryJobRealtime(jobId),
 							deleteStoryJob(jobId),
 						]);
 					} catch (cleanupError) {
-						await logError(cleanupError, "medium", {
-							screen: "home",
-							action: "cleanup_job",
-							metadata: { storyId, jobId },
-							userId: user?.id,
-						}, user?.id);
+						await logError(
+							cleanupError,
+							"medium",
+							{
+								screen: "home",
+								action: "cleanup_job",
+								metadata: { storyId, jobId },
+								userId: user?.id,
+							},
+							user?.id,
+						);
 					}
 				}
 			}
@@ -543,12 +620,17 @@ export default function HomeScreen() {
 								deleteStoryJobRealtime(jobId),
 							]);
 						} catch (cleanupError) {
-							await logError(cleanupError, "high", {
-								screen: "home",
-								action: "cleanup_failed_story",
-								metadata: { storyId, jobId },
-								userId: user?.id,
-							}, user?.id);
+							await logError(
+								cleanupError,
+								"high",
+								{
+									screen: "home",
+									action: "cleanup_failed_story",
+									metadata: { storyId, jobId },
+									userId: user?.id,
+								},
+								user?.id,
+							);
 						}
 					}
 				}
@@ -557,24 +639,34 @@ export default function HomeScreen() {
 			unsubscribeRef.current = unsubscribe;
 
 			generateStoryWithAPI(jobId, storyId).catch(async (err) => {
-				await logError(err, "critical", {
-					screen: "home",
-					action: "story_generation",
-					metadata: { jobId, storyId },
-					userId: user?.id,
-				}, user?.id);
+				await logError(
+					err,
+					"critical",
+					{
+						screen: "home",
+						action: "story_generation",
+						metadata: { jobId, storyId },
+						userId: user?.id,
+					},
+					user?.id,
+				);
 			});
 		} catch (err) {
 			const errorMessage =
 				err instanceof Error ? err.message : "Failed to create story";
 			setError(errorMessage);
 			setIsGenerating(false);
-			await logError(err, "high", {
-				screen: "home",
-				action: "create_story",
-				metadata: { userId: user?.id },
-				userId: user?.id,
-			}, user?.id);
+			await logError(
+				err,
+				"high",
+				{
+					screen: "home",
+					action: "create_story",
+					metadata: { userId: user?.id },
+					userId: user?.id,
+				},
+				user?.id,
+			);
 		} finally {
 			setIsLoading(false);
 		}
